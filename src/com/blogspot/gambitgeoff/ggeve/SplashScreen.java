@@ -17,10 +17,8 @@ public class SplashScreen extends Activity {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-                Intent mainIntent = new Intent(SplashScreen.this,Menu.class);
-                SplashScreen.this.startActivity(mainIntent);
-                SplashScreen.this.finish(); 
+                SplashScreen.this.finish();
 			}}, SPLASH_TIMEOUT);
+		
 	}
 }
