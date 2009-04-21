@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
 
 public class SplashScreen extends Activity {
 	
@@ -15,10 +14,15 @@ public class SplashScreen extends Activity {
 		setContentView(R.layout.splashscreen);
 		new Handler().postDelayed(new Runnable (){
 
-			@Override
 			public void run() {
+				startApplication();
                 SplashScreen.this.finish();
 			}}, SPLASH_TIMEOUT);
-		
+	}
+	
+	private void startApplication()
+	{
+		Intent i = new Intent(this, GGEve.class);
+		this.startActivity(i);
 	}
 }
