@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string name="app_title">GGEve</string>
-	
-
+	<string name="app_title">GGEve Character Tracker</string>
+	<string name="splashtitle">EveSplashScreen</string>
+	<string name="app_runner">EveAppRunner</string>
+	<string name="app_overview">EveOverview</string>
+	<string name="menu_item">Settings</string>
 </resources>
