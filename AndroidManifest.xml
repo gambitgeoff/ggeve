@@ -6,7 +6,7 @@
 		android:allowTaskReparenting="true" android:enabled="true"
 		android:debuggable="true">
 		
-	<activity android:icon="@drawable/eve_online_logo" android:name="GGEveApplicationRunner" android:label="@string/app_runner"><intent-filter><action android:name="android.intent.action.MAIN"></action>
+	<activity android:icon="@drawable/eve_online_logo" android:name="GGEveApplicationRunner" android:label="Eve Characters"><intent-filter><action android:name="android.intent.action.MAIN"></action>
 <category android:name="android.intent.category.BROWSABLE"></category>
 <category android:name="android.intent.category.LAUNCHER"></category>
 
