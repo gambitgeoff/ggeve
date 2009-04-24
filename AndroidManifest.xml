@@ -15,5 +15,5 @@
 <activity android:theme="@android:style/Theme.Dialog" android:name="SplashScreen" android:label="@string/splashtitle"></activity>
 <activity android:icon="@drawable/eve_online_logo" android:name="GGEveOverviewActivity" android:label="@string/app_overview"></activity>
 </application>
-<uses-sdk minSdkVersion="1" />
+<uses-sdk minSdkVersion="2" />
 </manifest> 
