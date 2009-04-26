@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.blogspot.gambitgeoff.ggeve" android:versionName="1.0.0" android:versionCode="4">
+	<uses-sdk android:minSdkVersion="1" />
+	
 	<application android:icon="@drawable/eve_online_logo"
 		android:label="@string/app_title" android:persistent="false"
 		android:allowTaskReparenting="true" android:enabled="true"
@@ -15,5 +17,5 @@
 <activity android:theme="@android:style/Theme.Dialog" android:name="SplashScreen" android:label="@string/splashtitle"></activity>
 <activity android:icon="@drawable/eve_online_logo" android:name="GGEveOverviewActivity" android:label="@string/app_overview"></activity>
 </application>
-<uses-sdk minSdkVersion="2" />
+
 </manifest> 

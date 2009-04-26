@@ -23,5 +23,4 @@ public class GGEveApplicationRunner extends Activity {
 			this.finish();
 		}
 	}
-
 }

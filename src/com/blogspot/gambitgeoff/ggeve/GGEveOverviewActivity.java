@@ -1,5 +1,7 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,13 +28,16 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_USERNAME = 83485;
 
 	private Dialog myAPIKeyDialog;
+	private EveSettings myEveSettings;
+	private EveAPI myEveAPI;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		myEveSettings = new EveSettings();
+		myEveAPI = new EveAPI();
 		setContentView(R.layout.main);
-
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,7 +90,7 @@ public class GGEveOverviewActivity extends Activity {
 
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					EveSettings.setEveAPIKey(apiKeyText.toString());
+					myEveSettings.setEveAPIKey(apiKeyText.toString());
 					myAPIKeyDialog.cancel();
 				}
 
