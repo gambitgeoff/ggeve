@@ -7,6 +7,10 @@ import android.os.Bundle;
 public class GGEveApplicationRunner extends Activity {
 
 	private static final int SPLASH_FINISHED = 1453234;
+	public static final String EVE_PREFERENCES = "myEvePreferences";
+	
+	public static final String EVE_PUBLIC_API_KEY = "myEvePublicAPIKey";
+	
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle icicle) {
