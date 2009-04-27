@@ -20,13 +20,11 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_USERNAME = 83485;
 
 	private Dialog myAPIKeyDialog;
-	private EveSettings myEveSettings;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myEveSettings = new EveSettings();
 		setContentView(R.layout.mainoverview);
 	}
 
