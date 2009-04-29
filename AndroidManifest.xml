@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.blogspot.gambitgeoff.ggeve" android:versionName="1.0.0" android:versionCode="4">
+	package="com.blogspot.gambitgeoff.ggeve" android:versionName="1.0.0"
+	android:versionCode="5">
 	<uses-sdk android:minSdkVersion="1" />
-	
+
 	<application android:icon="@drawable/eve_online_logo"
 		android:label="@string/app_title" android:persistent="false"
 		android:allowTaskReparenting="true" android:enabled="true"
 		android:debuggable="true">
-		
-	<activity android:icon="@drawable/eve_online_logo" android:name="GGEveApplicationRunner" android:label="Eve Characters"><intent-filter><action android:name="android.intent.action.MAIN"></action>
-<category android:name="android.intent.category.BROWSABLE"></category>
-<category android:name="android.intent.category.LAUNCHER"></category>
+		<activity android:icon="@drawable/eve_online_logo"
+			android:name="GGEveApplicationRunner" android:label="Eve Characters">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"></action>
+				<category android:name="android.intent.category.LAUNCHER"></category>
+			</intent-filter>
+		</activity>
+		<activity android:theme="@android:style/Theme.Dialog"
+			android:name="SplashScreen" android:label="@string/splashtitle"></activity>
+		<activity android:icon="@drawable/eve_online_logo"
+			android:name="GGEveOverviewActivity" android:label="@string/app_overview"></activity>
+	</application>
 
-</intent-filter>
-</activity>
-<activity android:theme="@android:style/Theme.Dialog" android:name="SplashScreen" android:label="@string/splashtitle"></activity>
-<activity android:icon="@drawable/eve_online_logo" android:name="GGEveOverviewActivity" android:label="@string/app_overview"></activity>
-</application>
-
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest> 
