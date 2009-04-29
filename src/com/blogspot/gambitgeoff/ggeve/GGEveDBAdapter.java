@@ -62,7 +62,7 @@ public class GGEveDBAdapter {
 	
 	public EveCharacter getEntry(long inRowIndex)
 	{
-		EveCharacter objectInstance = new EveCharacter();
+		EveCharacter objectInstance = new EveCharacter("",-1);
 		return objectInstance;
 	}
 	

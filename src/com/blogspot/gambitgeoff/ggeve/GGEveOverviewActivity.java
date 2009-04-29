@@ -1,5 +1,9 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.util.Vector;
+
+import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
@@ -18,14 +22,40 @@ public class GGEveOverviewActivity extends Activity {
 
 	private static final int MENU_APIKEY = 234;
 	private static final int MENU_USERNAME = 83485;
+	private AccountCharacters myAccountCharacters;
 
-	private Dialog myAPIKeyDialog;
+	private Dialog myAPIKeyDialog, myUserNameDialog;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences prefs = getSharedPreferences(
+				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
+				"-1");
+		String apikey = prefs.getString(
+				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
+		if (!userID.equals("-1"))
+			if (!apikey.equals("notset"))
+				myAccountCharacters = new AccountCharacters(Integer
+						.parseInt(userID), apikey);
 		setContentView(R.layout.mainoverview);
+		setupButtonNames();
+	}
+
+	private void setupButtonNames() {
+		if (myAccountCharacters != null) {
+			Vector<EveCharacter> tempCharacters = myAccountCharacters
+					.getCharacters();
+			Button b = (Button) GGEveOverviewActivity.this
+					.findViewById(R.id.char1);
+			b.setText(tempCharacters.elementAt(0).getName());
+			b = (Button) GGEveOverviewActivity.this.findViewById(R.id.char2);
+			b.setText(tempCharacters.elementAt(1).getName());
+			b = (Button) GGEveOverviewActivity.this.findViewById(R.id.char3);
+			b.setText(tempCharacters.elementAt(2).getName());
+		}
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,10 +63,8 @@ public class GGEveOverviewActivity extends Activity {
 		SubMenu sub = menu.addSubMenu(0, 0, Menu.NONE, R.string.menu_item);
 		sub.setHeaderIcon(R.drawable.menu_item_icon);
 		sub.setIcon(R.drawable.menu_item_icon);
-		sub.add(0, MENU_APIKEY, Menu.NONE,
-				R.string.enter_api_key);
-		sub.add(0, MENU_USERNAME, Menu.NONE,
-				R.string.enter_username);
+		sub.add(0, MENU_APIKEY, Menu.NONE, R.string.enter_api_key);
+		sub.add(0, MENU_USERNAME, Menu.NONE, R.string.enter_username);
 
 		return true;
 	}
@@ -46,6 +74,57 @@ public class GGEveOverviewActivity extends Activity {
 		// Find which menu item has been selected
 		switch (item.getItemId()) {
 		// Check for each known menu item
+		case (MENU_USERNAME): {
+			if (myUserNameDialog == null)
+				myUserNameDialog = new Dialog(GGEveOverviewActivity.this);
+			Window window = myUserNameDialog.getWindow();
+			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
+					WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+			myUserNameDialog.setTitle("Enter User ID");
+			myUserNameDialog.setContentView(R.layout.useriddialog);
+			myUserNameDialog.show();
+
+			final EditText useridText = (EditText) myUserNameDialog
+					.findViewById(R.id.userId_edittext);
+			SharedPreferences prefs = getSharedPreferences(
+					GGEveApplicationRunner.EVE_PREFERENCES,
+					Activity.MODE_PRIVATE);
+			String userid = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
+					"Not yet set!");
+			useridText.setText(userid);
+
+			Button cancelButton = (Button) myUserNameDialog
+					.findViewById(R.id.cancel_button);
+			cancelButton.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if (myUserNameDialog != null) {
+						if (myUserNameDialog.isShowing())
+							myUserNameDialog.cancel();
+					}
+				}
+
+			});
+
+			Button okButton = (Button) myUserNameDialog
+					.findViewById(R.id.ok_button);
+			okButton.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SharedPreferences prefs = getSharedPreferences(
+							GGEveApplicationRunner.EVE_PREFERENCES,
+							Activity.MODE_PRIVATE);
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putString(GGEveApplicationRunner.EVE_USER_ID,
+							useridText.getText().toString());
+					editor.commit();
+					myUserNameDialog.cancel();
+				}
+			});
+			return true;
+		}
 		case (MENU_APIKEY): {
 			if (myAPIKeyDialog == null)
 				myAPIKeyDialog = new Dialog(GGEveOverviewActivity.this);
@@ -55,10 +134,14 @@ public class GGEveOverviewActivity extends Activity {
 			myAPIKeyDialog.setTitle(R.string.enter_api_key);
 			myAPIKeyDialog.setContentView(R.layout.apikeydialog);
 			myAPIKeyDialog.show();
-			
-			final EditText apiKeyText = (EditText) myAPIKeyDialog.findViewById(R.id.api_edittext);
-			SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-			String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "Not yet set!");
+
+			final EditText apiKeyText = (EditText) myAPIKeyDialog
+					.findViewById(R.id.api_edittext);
+			SharedPreferences prefs = getSharedPreferences(
+					GGEveApplicationRunner.EVE_PREFERENCES,
+					Activity.MODE_PRIVATE);
+			String apikey = prefs.getString(
+					GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "Not yet set!");
 			apiKeyText.setText(apikey);
 
 			Button cancelButton = (Button) myAPIKeyDialog
@@ -81,9 +164,12 @@ public class GGEveOverviewActivity extends Activity {
 
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+					SharedPreferences prefs = getSharedPreferences(
+							GGEveApplicationRunner.EVE_PREFERENCES,
+							Activity.MODE_PRIVATE);
 					SharedPreferences.Editor editor = prefs.edit();
-					editor.putString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, apiKeyText.getText().toString());
+					editor.putString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY,
+							apiKeyText.getText().toString());
 					editor.commit();
 					myAPIKeyDialog.cancel();
 				}
