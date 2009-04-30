@@ -10,6 +10,7 @@ public class GGEveApplicationRunner extends Activity {
 	public static final String EVE_PREFERENCES = "myEvePreferences";
 	public static final String EVE_PUBLIC_API_KEY = "myEvePublicAPIKey";
 	public static final String EVE_USER_ID = "myEveUserID";
+	public static final String EVE_CURRENT_CHARACTER = "myCurrentCharacter";
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle icicle) {

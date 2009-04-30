@@ -7,4 +7,5 @@
 	<string name="menu_item">Settings</string>
 	<string name="enter_api_key">Enter API Key</string>
 	<string name="enter_username">Enter User Name</string>
+	<string name="character_screeen">Character Screen</string>
 </resources>

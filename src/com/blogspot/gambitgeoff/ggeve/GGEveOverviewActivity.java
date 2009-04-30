@@ -6,6 +6,7 @@ import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,38 +25,105 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_USERNAME = 83485;
 	private AccountCharacters myAccountCharacters;
 
-	private Dialog myAPIKeyDialog, myUserNameDialog;
+	private Dialog myAPIKeyDialog, myUserNameDialog, myInvalidKeyUserIDDialog;
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
-				"-1");
-		String apikey = prefs.getString(
-				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
+		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,"-1");
+		String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
 		if (!userID.equals("-1"))
+		{
 			if (!apikey.equals("notset"))
-				myAccountCharacters = new AccountCharacters(Integer
-						.parseInt(userID), apikey);
+			{
+				try 
+				{
+					myAccountCharacters = new AccountCharacters(Integer.parseInt(userID), apikey);
+				} 
+				catch (NumberFormatException e) 
+				{
+					e.printStackTrace();
+				} 
+				catch (EveAuthenticationException e) 
+				{
+					// TODO Auto-generated catch block
+					myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
+					Window window = myInvalidKeyUserIDDialog.getWindow();
+					window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+					myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
+					myInvalidKeyUserIDDialog.setContentView(R.layout.invalidapikeyuserid);
+					myInvalidKeyUserIDDialog.show();
+					
+					Button ackButton = (Button) myInvalidKeyUserIDDialog.findViewById(R.id.button_acknowledge);
+					ackButton.setOnClickListener(new OnClickListener() {
+						public void onClick(View v) 
+						{
+							if (myInvalidKeyUserIDDialog != null) 
+							{
+								if (myInvalidKeyUserIDDialog.isShowing())
+								{
+									myInvalidKeyUserIDDialog.cancel();
+								}
+							}
+						}});
+				}
+			}
+		}
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
 	}
 
 	private void setupButtonNames() {
 		if (myAccountCharacters != null) {
-			Vector<EveCharacter> tempCharacters = myAccountCharacters
+			final Vector<EveCharacter> tempCharacters = myAccountCharacters
 					.getCharacters();
-			Button b = (Button) GGEveOverviewActivity.this
-					.findViewById(R.id.char1);
-			b.setText(tempCharacters.elementAt(0).getName());
-			b = (Button) GGEveOverviewActivity.this.findViewById(R.id.char2);
-			b.setText(tempCharacters.elementAt(1).getName());
-			b = (Button) GGEveOverviewActivity.this.findViewById(R.id.char3);
-			b.setText(tempCharacters.elementAt(2).getName());
+
+			if (tempCharacters.size() == 3) {
+				Button b = (Button) GGEveOverviewActivity.this.findViewById(R.id.char1);
+				b.setText(tempCharacters.elementAt(0).getName());
+				b.setOnClickListener(new OnClickListener(){
+
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(0).getName());
+
+					}});
+				
+				b = (Button) GGEveOverviewActivity.this
+						.findViewById(R.id.char2);
+				b.setText(tempCharacters.elementAt(1).getName());
+				b.setOnClickListener(new OnClickListener(){
+
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(1).getName());
+					}});
+				
+				
+				b = (Button) GGEveOverviewActivity.this
+						.findViewById(R.id.char3);
+				b.setText(tempCharacters.elementAt(2).getName());
+				b.setOnClickListener(new OnClickListener(){
+
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(2).getName());
+					}});
+			}
 		}
+	}
+	
+	private void loadCharacter(String inCharacter)
+	{
+		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES,Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,inCharacter);
+		editor.commit();
+		Intent characterInfoActivity = new Intent(this, CharacterInfoActivity.class);
+		startActivity(characterInfoActivity);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

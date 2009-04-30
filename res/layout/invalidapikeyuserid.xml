@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+android:id="@+id/widget0"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<TextView
+android:id="@+id/widget28"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Invalid API Key or User ID"
+android:textSize="22sp"
+android:layout_x="20px"
+android:layout_y="2px"
+>
+</TextView>
+<Button
+android:id="@+id/button_acknowledge"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Acknowledge"
+android:layout_x="100px"
+android:layout_y="42px"
+>
+</Button>
+</AbsoluteLayout>

@@ -13,13 +13,6 @@ public class SplashScreen extends Activity {
 	public void onCreate(Bundle inBundle){
 		super.onCreate(inBundle);
 		setContentView(R.layout.splashscreen);
-//		try {
-//			Thread.sleep(4000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		this.finish();
 		new Handler().postDelayed(new Runnable (){
 
 			public void run() {
