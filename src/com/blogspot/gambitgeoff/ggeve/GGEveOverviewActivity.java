@@ -26,7 +26,6 @@ public class GGEveOverviewActivity extends Activity {
 	private AccountCharacters myAccountCharacters;
 
 	private Dialog myAPIKeyDialog, myUserNameDialog, myInvalidKeyUserIDDialog;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -49,7 +48,6 @@ public class GGEveOverviewActivity extends Activity {
 				} 
 				catch (EveAuthenticationException e) 
 				{
-					// TODO Auto-generated catch block
 					myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
 					Window window = myInvalidKeyUserIDDialog.getWindow();
 					window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
@@ -87,7 +85,6 @@ public class GGEveOverviewActivity extends Activity {
 				b.setOnClickListener(new OnClickListener(){
 
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(0).getName());
 
 					}});
@@ -98,7 +95,6 @@ public class GGEveOverviewActivity extends Activity {
 				b.setOnClickListener(new OnClickListener(){
 
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(1).getName());
 					}});
 				
@@ -109,7 +105,6 @@ public class GGEveOverviewActivity extends Activity {
 				b.setOnClickListener(new OnClickListener(){
 
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						GGEveOverviewActivity.this.loadCharacter(tempCharacters.elementAt(2).getName());
 					}});
 			}
@@ -124,7 +119,7 @@ public class GGEveOverviewActivity extends Activity {
 		editor.commit();
 		Intent characterInfoActivity = new Intent(this, CharacterInfoActivity.class);
 		startActivity(characterInfoActivity);
-	}
+}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -166,7 +161,6 @@ public class GGEveOverviewActivity extends Activity {
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					if (myUserNameDialog != null) {
 						if (myUserNameDialog.isShowing())
 							myUserNameDialog.cancel();
@@ -180,7 +174,6 @@ public class GGEveOverviewActivity extends Activity {
 			okButton.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					SharedPreferences prefs = getSharedPreferences(
 							GGEveApplicationRunner.EVE_PREFERENCES,
 							Activity.MODE_PRIVATE);
@@ -217,7 +210,6 @@ public class GGEveOverviewActivity extends Activity {
 			cancelButton.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					if (myAPIKeyDialog != null) {
 						if (myAPIKeyDialog.isShowing())
 							myAPIKeyDialog.cancel();
@@ -231,7 +223,6 @@ public class GGEveOverviewActivity extends Activity {
 			okButton.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					SharedPreferences prefs = getSharedPreferences(
 							GGEveApplicationRunner.EVE_PREFERENCES,
 							Activity.MODE_PRIVATE);
@@ -248,5 +239,4 @@ public class GGEveOverviewActivity extends Activity {
 		// Return false if you have not handled the menu item.
 		return false;
 	}
-
 }
