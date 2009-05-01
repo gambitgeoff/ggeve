@@ -52,7 +52,6 @@ public class GGEveDBAdapter {
 	public GGEveDBAdapter open() throws SQLException
 	{
 		myDb = myDbHelper.getWritableDatabase();
-		myDbHelper.onUpgrade(myDb, 1, 1);
 		return this;
 	}
 	
@@ -82,6 +81,25 @@ public class GGEveDBAdapter {
 	public Cursor getAllEntries()
 	{
 		return myDb.query(DATABASE_TABLE, new String[] {KEY_ID, EveCharacter.KEY_CHARACTER_NAME}, null,null,null,null,null);
+	}
+	
+	public EveCharacter getEveCharacter(String inEveCharacterName)
+	{
+		String query = EveCharacter.KEY_CHARACTER_NAME + "=" + inEveCharacterName;
+		Cursor cursor = myDb.query(DATABASE_TABLE, null, query, null, null, null, null, null);
+		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
+			  throw new SQLException("Eve Character with name: " + inEveCharacterName + " does not exist!");
+			}
+
+		String myName = cursor.getString(COLUMN_CHARACTER_NAME);
+		String myRace = cursor.getString(COLUMN_CHARACTER_RACE);
+		String myBloodline = cursor.getString(COLUMN_CHARACTER_BLOODLINE);
+		String myGender = cursor.getString(COLUMN_CHARACTER_GENDER);
+		String myCorporationName = cursor.getString(COLUMN_CHARACTER_CORP_NAME);
+		int myCharacterID = cursor.getInt(COLUMN_CHARACTER_ID);
+		int myCorporationID = cursor.getInt(COLUMN_CHARACTER_CORP_ID);
+		int myBalance = cursor.getInt(COLUMN_CHARACTER_BALANCE);
+		return new EveCharacter(myName, myCharacterID, myRace, myBloodline, myGender, myCorporationName, myCorporationID, myBalance);		
 	}
 	
 	public EveCharacter getEveCharacter(long inRowIndex)

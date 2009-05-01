@@ -13,6 +13,11 @@ public class EveCharacter {
 	private String myName, myRace, myBloodline, myGender, myCorporationName;
 	private int myCharacterID, myCorporationID, myBalance;
 	
+	public EveCharacter()
+	{
+		
+	}
+	
 	public EveCharacter(String inName, int inCharacterID, String inRace, String inBloodline, String inGender, String inCorporationName, int inCorporationID, int inBalance)
 	{
 		myName = inName;
