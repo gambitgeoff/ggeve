@@ -71,8 +71,8 @@ public class AccountCharacters {
 					Node n = list.item(i);
 						NamedNodeMap map = n.getAttributes();
 						int size2 = map.getLength();
-						String tempName = "";
-						int tempCharID = -1;
+						String tempName = "", tempCorpName = "";
+						int tempCharID = -1, tempCorpID = -1;
 						for (int i2=0;i2<size2;i2++)
 						{
 							Node tempNode = map.item(i2);
@@ -84,8 +84,16 @@ public class AccountCharacters {
 							{
 								tempCharID = Integer.parseInt(tempNode.getNodeValue());
 							}
+							else if (tempNode.getNodeName().equals("corporationName"))
+							{
+								tempCorpName = tempNode.getNodeValue();
+							}
+							else if (tempNode.getNodeName().equals("corporationID"))
+							{
+								tempCorpID = Integer.parseInt(tempNode.getNodeValue());
+							}
 						}
-						myCharacters.add(new EveCharacter(tempName, tempCharID));
+						myCharacters.add(new EveCharacter(tempName, tempCharID, tempCorpName, tempCorpID));
 					}
 				} catch (SAXException e) {
 					// TODO Auto-generated catch block
