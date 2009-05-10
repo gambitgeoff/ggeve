@@ -86,8 +86,7 @@ public class GGEveDBAdapter {
 
 	private Cursor getAllEntries() {
 		return myDb
-				.query(DATABASE_TABLE, new String[] { KEY_ID,
-						EveCharacter.KEY_CHARACTER_NAME }, null, null, null,
+				.query(DATABASE_TABLE, null, null, null, null,
 						null, null);
 	}
 
@@ -132,8 +131,8 @@ public class GGEveDBAdapter {
 	public Vector<EveCharacter> getEveCharacters() {
 		Vector<EveCharacter> returnValue = new Vector<EveCharacter>();
 		Cursor cursor = getAllEntries();
-		cursor.moveToFirst();
-		while (cursor.moveToNext()) {
+		boolean keepGoing = cursor.moveToFirst();
+		while (keepGoing) {
 			String myName = cursor.getString(COLUMN_CHARACTER_NAME);
 			String myRace = cursor.getString(COLUMN_CHARACTER_RACE);
 			String myBloodline = cursor.getString(COLUMN_CHARACTER_BLOODLINE);
@@ -145,12 +144,13 @@ public class GGEveDBAdapter {
 			returnValue.add(new EveCharacter(myName, myCharacterID, myRace,
 					myBloodline, myGender, myCorporationName, myCorporationID,
 					myBalance));
+			keepGoing = cursor.moveToNext();
 		}
 		return returnValue;
 	}
 
 	private int updateEveCharacter(EveCharacter inEveCharacter) {
-		String where = EveCharacter.KEY_CHARACTER_NAME + "=" + inEveCharacter.getCharacterName();
+		String where = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName() + "'";
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(EveCharacter.KEY_CHARACTER_NAME, inEveCharacter
 				.getCharacterName());
@@ -169,7 +169,6 @@ public class GGEveDBAdapter {
 		contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter
 				.getBalance());
 		return myDb.update(DATABASE_TABLE, contentValues, where, null);
-
 	}
 
 	private static class DbHelper extends SQLiteOpenHelper {
