@@ -1,5 +1,7 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.util.Vector;
+
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 
 import android.app.Activity;
@@ -31,17 +33,17 @@ public class GGEveOverviewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		myGGEveDBAdapter = new GGEveDBAdapter(this);
 		myGGEveDBAdapter.open();
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
-				"-1");
-		String apikey = prefs.getString(
-				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
+		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,"-1");
+		String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
 		if (!userID.equals("-1")) {
 			if (!apikey.equals("notset")) {
 				try {
-					populateDatabase(new AccountCharacters(Integer
-							.parseInt(userID), apikey));
+					AccountCharacters tempChars = new AccountCharacters(Integer.parseInt(userID), apikey);
+					for (EveCharacter ec: tempChars.getCharacters())
+					{
+						myGGEveDBAdapter.addEveCharacter(ec);
+					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (EveAuthenticationException e) {
@@ -74,46 +76,27 @@ public class GGEveOverviewActivity extends Activity {
 		setupButtonNames();
 	}
 
-	private void populateDatabase(AccountCharacters inAccountCharacters) {
-		for (EveCharacter ec : inAccountCharacters.getCharacters()) {
-			long returnvalue = myGGEveDBAdapter.insertEveCharacter(ec);
-			System.out.println(returnvalue);
-		}
-	}
-
 	private void setupButtonNames() {
-		final EveCharacter c1 = myGGEveDBAdapter.getEveCharacter(1);
-		final EveCharacter c2 = myGGEveDBAdapter.getEveCharacter(2);
-		final EveCharacter c3 = myGGEveDBAdapter.getEveCharacter(3);
-
-		Button b1 = (Button) GGEveOverviewActivity.this.findViewById(R.id.char1);
-		Button b2 = (Button) GGEveOverviewActivity.this.findViewById(R.id.char2);
-		Button b3 = (Button) GGEveOverviewActivity.this.findViewById(R.id.char3);
+		Button [] buttons = new Button[3];
+		buttons[0] = (Button)this.findViewById(R.id.char1);
+		buttons[1] = (Button)this.findViewById(R.id.char2);
+		buttons[2] = (Button)this.findViewById(R.id.char3);
 		
-		b1.setText(c1.getCharacterName());
-		b2.setText(c2.getCharacterName());
-		b3.setText(c2.getCharacterName());
-		
-		b1.setOnClickListener(new OnClickListener() {
+		Vector<EveCharacter> tempChars = myGGEveDBAdapter.getEveCharacters();
+		if (tempChars.size()>0 && tempChars.size()<4)
+		{
+			for (int i=0;i<tempChars.size();i++)
+			{
+				final EveCharacter ec = tempChars.get(i);
+				buttons[i].setText(tempChars.get(i).getCharacterName());
+				buttons[i].setOnClickListener(new OnClickListener() {
 
-			public void onClick(View v) {
-				GGEveOverviewActivity.this.loadCharacter(c1.getCharacterName());
+					public void onClick(View v) {
+						GGEveOverviewActivity.this.loadCharacter(ec.getCharacterName());
+					}
+				});
 			}
-		});
-		
-		b2.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				GGEveOverviewActivity.this.loadCharacter(c2.getCharacterName());
-			}
-		});
-
-		b3.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				GGEveOverviewActivity.this.loadCharacter(c3.getCharacterName());
-			}
-		});
+		}
 	}
 
 	private void loadCharacter(String inCharacter) {

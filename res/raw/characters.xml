@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eveapi version="2">
+  <currentTime>2009-05-10 08:46:21</currentTime>
+  <result>
+    <rowset name="characters" key="characterID" columns="name,characterID,corporationName,corporationID">
+      <row name="Ra Miam" characterID="1040214115" corporationName="Pator Tech School" corporationID="1000172"/>
+      <row name="Ra Kovah" characterID="1284259454" corporationName="ANZAC ALLIANCE" corporationID="355443127"/>
+      <row name="Ra Sol" characterID="1335350532" corporationName="Federal Navy Academy" corporationID="1000168"/>
+    </rowset>
+  </result>
+  <cachedUntil>2009-05-10 09:46:21</cachedUntil>
+</eveapi>

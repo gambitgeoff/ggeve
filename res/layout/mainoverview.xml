@@ -5,15 +5,6 @@ android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 xmlns:android="http://schemas.android.com/apk/res/android"
 >
-<Button
-android:id="@+id/widget35"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Corp Comms"
-android:layout_x="110px"
-android:layout_y="82px"
->
-</Button>
 <ListView
 android:id="@+id/widget36"
 android:layout_width="300px"
@@ -27,8 +18,8 @@ android:layout_y="152px"
 android:id="@+id/char1"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="Button"
-android:layout_x="20px"
+android:text="No Char"
+android:layout_x="24px"
 android:layout_y="22px"
 >
 </Button>
@@ -36,8 +27,8 @@ android:layout_y="22px"
 android:id="@+id/char2"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="Button"
-android:layout_x="120px"
+android:text="No Char"
+android:layout_x="123px"
 android:layout_y="22px"
 >
 </Button>
@@ -45,7 +36,7 @@ android:layout_y="22px"
 android:id="@+id/char3"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="Button"
+android:text="No Char"
 android:layout_x="230px"
 android:layout_y="22px"
 >

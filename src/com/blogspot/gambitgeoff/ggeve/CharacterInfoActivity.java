@@ -22,40 +22,39 @@ public class CharacterInfoActivity extends Activity {
 		myGGEveDBAdapter = new GGEveDBAdapter(this);
 		myGGEveDBAdapter.open();
 		setContentView(R.layout.charactersheet);
+		
 		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
 		String char1 = prefs.getString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,"No Characters!");
 		myEveCharacter = myGGEveDBAdapter.getEveCharacter("'" + char1 + "'");
-		TextView viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_name);
-		viewt.setText(char1);
-		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_corp);
-		viewt.setText(viewt.getText() + myEveCharacter.getCorporationName());
-		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_race);
-		viewt.setText(viewt.getText() + myEveCharacter.getRace());
-		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_bloodline);
-		viewt.setText(viewt.getText() + myEveCharacter.getBloodline());
+
 		
 		Button updateDetails = (Button)CharacterInfoActivity.this.findViewById(R.id.get_details);
 		updateDetails.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				updateDetails();
 			}});
 	}
 	
 	private void updateDetails()
-	{
+	{			
 		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
 		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,"-1");
 		String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
-		int charID = myEveCharacter.getCharacterID();
-		
-		CharacterSheet cs = new CharacterSheet(Integer.parseInt(userID), apikey, charID);
-//		myGGEveDBAdapter.updateEveCharacter(1, cs.getCharacter());
+		String char1 = prefs.getString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,"No Characters!");
+		CharacterSheet cs = new CharacterSheet(Integer.parseInt(userID), apikey, myEveCharacter.getCharacterID());
 		myEveCharacter = cs.getCharacter();
-		TextView viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_race);
-		viewt.setText(viewt.getText() + myEveCharacter.getRace());
+		TextView viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_name);
+		viewt.setText(char1);
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_corp);
+		viewt.setText("Corporation Name: " + myEveCharacter.getCorporationName());
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_race);
+		viewt.setText("Race: " + myEveCharacter.getRace());
 		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_bloodline);
-		viewt.setText(viewt.getText() + myEveCharacter.getBloodline());
+		viewt.setText("Bloodline: " + myEveCharacter.getBloodline());
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_balance);
+		viewt.setText("Balance: " + myEveCharacter.getBalance());
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_gender);
+		viewt.setText("Gender: " + myEveCharacter.getGender());
 	}
 }

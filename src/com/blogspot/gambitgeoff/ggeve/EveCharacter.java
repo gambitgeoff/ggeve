@@ -11,7 +11,8 @@ public class EveCharacter {
 	public static final String KEY_CHARACTER_CORP_ID = "KEY_CHARACTER_CORP_ID";
 	public static final String KEY_CHARACTER_BALANCE = "KEY_CHARACTER_BALANCE";
 	private String myName, myRace, myBloodline, myGender, myCorporationName;
-	private int myCharacterID, myCorporationID, myBalance;
+	private int myCharacterID, myCorporationID;
+	private double myBalance;
 	
 	public EveCharacter()
 	{
@@ -56,12 +57,12 @@ public class EveCharacter {
 		myCorporationID = inCorporationID;
 	}
 	
-	public int getBalance()
+	public double getBalance()
 	{
 		return myBalance;
 	}
 	
-	public void setBalance(int inBalance)
+	public void setBalance(double inBalance)
 	{
 		myBalance = inBalance;
 	}
