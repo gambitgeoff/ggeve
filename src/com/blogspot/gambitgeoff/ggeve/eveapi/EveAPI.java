@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.graphics.drawable.Drawable;
+
 public class EveAPI {
 
 	public static final int myCharacterID = -1;
@@ -16,6 +18,34 @@ public class EveAPI {
 	private CharacterSheet myCharacterSheet;
 
 	public EveAPI() {
+	}
+
+	/**
+	 * http://img.eve.is/serv.asp?s=64&c=1040214115
+	 * 
+	 * @return
+	 */
+	public static Drawable getCharacterDrawable64(String inCharacterID) {
+		try {
+			URL eveOnlineURL = new URL("http://img.eve.is/serv.asp");
+			HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL
+					.openConnection();
+			myConnection.setRequestMethod("POST");
+			String data = "s=64&c=" + inCharacterID;
+			myConnection.setUseCaches(false);
+			myConnection.setDoInput(true);
+			myConnection.setDoOutput(true);
+			DataOutputStream os = new DataOutputStream(myConnection.getOutputStream());
+			os.writeBytes(data);
+			os.flush();
+			os.close();
+			
+			return Drawable.createFromStream(myConnection.getInputStream(), "CharacterImage");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static void getLogin(String inUserName, String inAPIKey) {

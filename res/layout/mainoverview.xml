@@ -14,31 +14,28 @@ android:layout_x="10px"
 android:layout_y="152px"
 >
 </ListView>
-<Button
+<ImageButton
 android:id="@+id/char1"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="No Char"
 android:layout_x="24px"
 android:layout_y="22px"
 >
-</Button>
-<Button
+</ImageButton>
+<ImageButton
 android:id="@+id/char2"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="No Char"
-android:layout_x="123px"
+android:layout_x="130px"
 android:layout_y="22px"
 >
-</Button>
-<Button
+</ImageButton>
+<ImageButton
 android:id="@+id/char3"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:text="No Char"
 android:layout_x="230px"
 android:layout_y="22px"
 >
-</Button>
+</ImageButton>
 </AbsoluteLayout>

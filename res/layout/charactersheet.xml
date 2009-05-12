@@ -19,7 +19,6 @@ android:layout_y="12px"
 android:id="@+id/character_image"
 android:layout_width="100sp"
 android:layout_height="100sp"
-android:background="#ffcc9900"
 android:layout_x="200px"
 android:layout_y="12px"
 >
@@ -87,13 +86,4 @@ android:layout_x="10px"
 android:layout_y="112px"
 >
 </TextView>
-<Button
-android:id="@+id/get_details"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Update!"
-android:layout_x="190px"
-android:layout_y="372px"
->
-</Button>
 </AbsoluteLayout>

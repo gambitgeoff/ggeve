@@ -3,6 +3,7 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.util.Vector;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
+import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class GGEveOverviewActivity extends Activity {
 
@@ -34,15 +36,18 @@ public class GGEveOverviewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		myGGEveDBAdapter = new GGEveDBAdapter(this);
 		myGGEveDBAdapter.open();
-		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,"-1");
-		String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
+		SharedPreferences prefs = getSharedPreferences(
+				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
+				"-1");
+		String apikey = prefs.getString(
+				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
 		if (!userID.equals("-1")) {
 			if (!apikey.equals("notset")) {
 				try {
-					AccountCharacters tempChars = new AccountCharacters(Integer.parseInt(userID), apikey);
-					for (EveCharacter ec: tempChars.getCharacters())
-					{
+					AccountCharacters tempChars = new AccountCharacters(Integer
+							.parseInt(userID), apikey);
+					for (EveCharacter ec : tempChars.getCharacters()) {
 						myGGEveDBAdapter.addEveCharacter(ec);
 					}
 				} catch (NumberFormatException e) {
@@ -78,22 +83,25 @@ public class GGEveOverviewActivity extends Activity {
 	}
 
 	private void setupButtonNames() {
-		Button [] buttons = new Button[3];
-		buttons[0] = (Button)this.findViewById(R.id.char1);
-		buttons[1] = (Button)this.findViewById(R.id.char2);
-		buttons[2] = (Button)this.findViewById(R.id.char3);
-		
+		ImageButton[] buttons = new ImageButton[3];
+		buttons[0] = (ImageButton) this.findViewById(R.id.char1);
+		buttons[1] = (ImageButton) this.findViewById(R.id.char2);
+		buttons[2] = (ImageButton) this.findViewById(R.id.char3);
+
 		Vector<EveCharacter> tempChars = myGGEveDBAdapter.getEveCharacters();
-		if (tempChars.size()>0 && tempChars.size()<4)
-		{
-			for (int i=0;i<tempChars.size();i++)
-			{
+		if (tempChars.size() > 0 && tempChars.size() < 4) {
+			for (int i = 0; i < tempChars.size(); i++) {
 				final EveCharacter ec = tempChars.get(i);
-				buttons[i].setText(tempChars.get(i).getCharacterName());
+				if (!GGEveApplicationRunner.getIsRunningOffline()) {
+					buttons[i].setImageDrawable(EveAPI
+							.getCharacterDrawable64(""
+									+ tempChars.get(i).getCharacterID()));
+				}
 				buttons[i].setOnClickListener(new OnClickListener() {
 
 					public void onClick(View v) {
-						GGEveOverviewActivity.this.loadCharacter(ec.getCharacterName());
+						GGEveOverviewActivity.this.loadCharacter(ec
+								.getCharacterName());
 					}
 				});
 			}
@@ -129,7 +137,7 @@ public class GGEveOverviewActivity extends Activity {
 		// Find which menu item has been selected
 		switch (item.getItemId()) {
 		// Check for each known menu item
-		case(MENU_RESETDB):{
+		case (MENU_RESETDB): {
 			myGGEveDBAdapter.reset();
 			return true;
 		}
