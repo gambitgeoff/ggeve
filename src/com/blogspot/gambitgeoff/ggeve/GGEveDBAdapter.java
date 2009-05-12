@@ -54,6 +54,12 @@ public class GGEveDBAdapter {
 		myDb = myDbHelper.getWritableDatabase();
 		return this;
 	}
+	
+	public void reset()
+	{
+		if (myDb!=null)
+			myDbHelper.onUpgrade(myDb, 1, 1);
+	}
 
 	public void close() {
 		myDb.close();

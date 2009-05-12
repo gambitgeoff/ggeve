@@ -43,10 +43,11 @@ public class AccountCharacters {
 	{
 	try {
 		URL eveOnlineURL = null;
+		HttpURLConnection myConnection = null;
 		if (!myIsRunningOffline)
 		{
 		eveOnlineURL = new URL("http://api.eve-online.com/account/Characters.xml.aspx");
-		HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
+		myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
 		myConnection.setRequestMethod("POST");
 		String data = "userid=" + myUserID + "&apikey=" + myAPIKey;
 		myConnection.setUseCaches(false);
@@ -70,7 +71,7 @@ public class AccountCharacters {
 				reader.setContentHandler(handler);
 				InputSource is = null;
 				if (!myIsRunningOffline)
-				{is = new InputSource(eveOnlineURL.openStream());}
+				{is = new InputSource(myConnection.getInputStream());}
 				else
 				{is = new InputSource(GGEveApplicationRunner.getGGEveOfflineCharacters());}
 				reader.parse(is);

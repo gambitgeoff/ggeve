@@ -21,8 +21,9 @@ import android.widget.EditText;
 
 public class GGEveOverviewActivity extends Activity {
 
-	private static final int MENU_APIKEY = 234;
-	private static final int MENU_USERNAME = 83485;
+	private static final int MENU_APIKEY = 100;
+	private static final int MENU_USERNAME = 101;
+	private static final int MENU_RESETDB = 102;
 	private GGEveDBAdapter myGGEveDBAdapter;
 
 	private Dialog myAPIKeyDialog, myUserNameDialog, myInvalidKeyUserIDDialog;
@@ -117,7 +118,8 @@ public class GGEveOverviewActivity extends Activity {
 		sub.setHeaderIcon(R.drawable.menu_item_icon);
 		sub.setIcon(R.drawable.menu_item_icon);
 		sub.add(0, MENU_APIKEY, Menu.NONE, R.string.enter_api_key);
-		sub.add(0, MENU_USERNAME, Menu.NONE, R.string.enter_username);
+		sub.add(0, MENU_USERNAME, Menu.NONE, R.string.enter_userid);
+		sub.add(0, MENU_RESETDB, Menu.NONE, "Reset Database");
 
 		return true;
 	}
@@ -127,6 +129,10 @@ public class GGEveOverviewActivity extends Activity {
 		// Find which menu item has been selected
 		switch (item.getItemId()) {
 		// Check for each known menu item
+		case(MENU_RESETDB):{
+			myGGEveDBAdapter.reset();
+			return true;
+		}
 		case (MENU_USERNAME): {
 			if (myUserNameDialog == null)
 				myUserNameDialog = new Dialog(GGEveOverviewActivity.this);

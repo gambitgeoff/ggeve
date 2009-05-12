@@ -51,11 +51,11 @@ public class CharacterSheet {
 	private void setupCharacterSheet() throws EveAuthenticationException
 	{
 		try {
-			URL eveOnlineURL = null;
+			HttpURLConnection myConnection = null;
 			if (!myOfflineModeFlag)
 			{
-			eveOnlineURL = new URL("http://api.eve-online.com/char/CharacterSheet.xml.aspx");
-			HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
+			URL eveOnlineURL = new URL("http://api.eve-online.com/char/CharacterSheet.xml.aspx");
+			myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
 			myConnection.setRequestMethod("POST");
 			String data = "characterID=" + myCharacterID + "&userid=" + myUserID + "&apikey=" + myAPIKey;
 			myConnection.setUseCaches(false);
@@ -79,7 +79,7 @@ public class CharacterSheet {
 					reader.setContentHandler(handler);
 					InputSource is = null;
 					if (!myOfflineModeFlag)
-					{is = new InputSource(eveOnlineURL.openStream());}
+					{is = new InputSource(myConnection.getInputStream());}
 					else
 					{is = new InputSource(GGEveApplicationRunner.getGGEveOfflineCharacterSheet());}
 					reader.parse(is);

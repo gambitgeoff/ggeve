@@ -5,7 +5,7 @@
 	<string name="app_runner">EveAppRunner</string>
 	<string name="app_overview">EveOverview</string>
 	<string name="menu_item">Settings</string>
-	<string name="enter_api_key">Enter API Key</string>
-	<string name="enter_username">Enter User Name</string>
+	<string name="enter_api_key">Public API Key</string>
+	<string name="enter_userid">User ID</string>
 	<string name="character_screeen">Character Screen</string>
 </resources>
