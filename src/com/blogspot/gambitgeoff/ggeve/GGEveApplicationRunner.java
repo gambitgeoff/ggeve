@@ -6,10 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
-import java.util.StringTokenizer;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

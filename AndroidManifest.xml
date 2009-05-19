@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.blogspot.gambitgeoff.ggeve" android:versionName="0.0.9" android:versionCode="9">
+	android:versionName="0.0.10" package="com.blogspot.gambitgeoff.ggeve"
+	android:versionCode="10">
 	<uses-sdk android:minSdkVersion="1" />
-	<application android:icon="@drawable/eve_online_logo"
-		android:label="@string/app_title" android:persistent="false"
-		android:allowTaskReparenting="true" android:enabled="true"
-		android:debuggable="true">
-		<activity android:icon="@drawable/eve_online_logo"
-			android:name="GGEveApplicationRunner" android:label="Eve Characters">
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<application android:debuggable="true" android:enabled="true"
+		android:allowClearUserData="true" android:icon="@drawable/eve_online_logo"
+		android:label="@string/app_title" android:description="@string/app_overview">
+		<activity android:name="GGEveApplicationRunner"
+			android:enabled="true" android:screenOrientation="portrait"
+			android:icon="@drawable/eve_online_logo">
+
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"></action>
 				<category android:name="android.intent.category.LAUNCHER"></category>
 			</intent-filter>
 		</activity>
-		<activity android:theme="@android:style/Theme.Dialog"
-			android:name="SplashScreen" android:label="@string/splashtitle"></activity>
-		<activity android:icon="@drawable/eve_online_logo"
-			android:name="GGEveOverviewActivity" android:label="@string/app_overview"></activity>
-	<activity android:name="CharacterInfoActivity" android:label="@string/character_screeen"></activity>
-</application>
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+		<activity android:name="SplashScreen"></activity>
+		<activity android:name="GGEveOverviewActivity"></activity>
+		<activity android:name="CharacterInfoActivity"></activity>
+	</application>
+
 </manifest> 
