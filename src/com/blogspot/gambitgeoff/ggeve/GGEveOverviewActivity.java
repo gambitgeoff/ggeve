@@ -62,8 +62,23 @@ public class GGEveOverviewActivity extends Activity {
 				});
 			}
 		}
+		else
+		{
+			displayGGEveInitializationInstructions();
+		}
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
+	}
+	
+	private void displayGGEveInitializationInstructions()
+	{
+		Dialog myInitialisationErrorDialog = new Dialog(GGEveOverviewActivity.this);
+		Window window = myInitialisationErrorDialog.getWindow();
+		window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
+				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+		myInitialisationErrorDialog.setTitle("Initialisation Error");
+		myInitialisationErrorDialog.setContentView(R.layout.initialisationerror);
+		myInitialisationErrorDialog.show();
 	}
 
 	private void setupButtonNames() {

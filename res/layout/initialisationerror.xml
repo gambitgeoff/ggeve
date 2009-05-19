@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+android:id="@+id/widget0"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<TextView
+android:id="@+id/widget28"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Unfortunately it appears the account details have not been set!  Please view the instructions for this at: http://wiki.github.com/gambitgeoff/ggeve/initialising-the-application"
+android:textSize="18sp"
+android:layout_x="0px"
+android:layout_y="2px"
+>
+</TextView>
+</AbsoluteLayout>
