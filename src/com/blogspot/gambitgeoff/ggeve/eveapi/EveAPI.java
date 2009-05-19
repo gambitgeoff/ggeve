@@ -1,8 +1,15 @@
 package com.blogspot.gambitgeoff.ggeve.eveapi;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -25,25 +32,75 @@ public class EveAPI {
 	 * 
 	 * @return
 	 */
-	public static Drawable getCharacterDrawable64(String inCharacterID) {
-		try {
-			URL eveOnlineURL = new URL("http://img.eve.is/serv.asp");
-			HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL
-					.openConnection();
-			myConnection.setRequestMethod("POST");
-			String data = "s=64&c=" + inCharacterID;
-			myConnection.setUseCaches(false);
-			myConnection.setDoInput(true);
-			myConnection.setDoOutput(true);
-			DataOutputStream os = new DataOutputStream(myConnection.getOutputStream());
-			os.writeBytes(data);
-			os.flush();
-			os.close();
-			
-			return Drawable.createFromStream(myConnection.getInputStream(), "CharacterImage");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//	public static Drawable getCharacterDrawable64(String inCharacterID) {
+//		try {
+//			URL eveOnlineURL = new URL("http://img.eve.is/serv.asp");
+//			HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL
+//					.openConnection();
+//			myConnection.setRequestMethod("POST");
+//			String data = "s=64&c=" + inCharacterID;
+//			myConnection.setUseCaches(false);
+//			myConnection.setDoInput(true);
+//			myConnection.setDoOutput(true);
+//			DataOutputStream os = new DataOutputStream(myConnection.getOutputStream());
+//			os.writeBytes(data);
+//			os.flush();
+//			os.close();
+//			
+//			return Drawable.createFromStream(myConnection.getInputStream(), "CharacterImage");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+	
+	/**
+	 * http://img.eve.is/serv.asp?s=64&c=1040214115
+	 * 
+	 * @return
+	 */
+	public static Drawable getCharacterImage(int inCharacterID) {
+		
+		File f = new File("sdcard/" + inCharacterID + ".jpg");
+		if (f.exists())
+		{
+				return Drawable.createFromPath("/sdcard/"+inCharacterID + ".jpg");
+		}
+		else
+		{
+			try {
+				URL eveOnlineURL = new URL("http://img.eve.is/serv.asp");
+				HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
+				myConnection.setRequestMethod("POST");
+				String data = "s=64&c=" + inCharacterID;
+				myConnection.setUseCaches(false);
+				myConnection.setDoInput(true);
+				myConnection.setDoOutput(true);
+				DataOutputStream os = new DataOutputStream(myConnection.getOutputStream());
+				os.writeBytes(data);
+				os.flush();
+				os.close();
+				
+				InputStream is = myConnection.getInputStream();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int result=0;
+				while((result=is.read())!=-1)
+				{
+					baos.write(result);
+				}
+				is.close();
+				baos.flush();
+				baos.close();
+				FileOutputStream fos = new FileOutputStream(f);
+				fos.write(baos.toByteArray());
+				fos.flush();
+				fos.close();
+				return Drawable.createFromPath("/sdcard/"+inCharacterID + ".jpg");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		}
 		return null;
 	}

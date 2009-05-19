@@ -10,7 +10,8 @@ public class EveCharacter {
 	public static final String KEY_CHARACTER_CORP_NAME = "KEY_CHARACTER_CORP_NAME";
 	public static final String KEY_CHARACTER_CORP_ID = "KEY_CHARACTER_CORP_ID";
 	public static final String KEY_CHARACTER_BALANCE = "KEY_CHARACTER_BALANCE";
-	private String myName, myRace, myBloodline, myGender, myCorporationName;
+	public static final String KEY_CHARACTER_IMAGE_NAME = "KEY_CHARACTER_IMAGE_NAME";
+	private String myName, myRace, myBloodline, myGender, myCorporationName, myCharacterImageName;
 	private int myCharacterID, myCorporationID;
 	private double myBalance;
 	
@@ -45,6 +46,16 @@ public class EveCharacter {
 		myCharacterID = inCharacterID;
 		myCorporationName = inCorporationName;
 		myCorporationID = inCorporationID;
+	}
+	
+	public String getCharacterImageName()
+	{
+		return myCharacterImageName;
+	}
+	
+	public void setCharacterImageName(String inCharacterImage)
+	{
+		myCharacterImageName = inCharacterImage;
 	}
 	
 	public int getCorporationID()

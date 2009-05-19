@@ -1,11 +1,18 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class GGEveApplicationRunner extends Activity {
@@ -22,10 +29,14 @@ public class GGEveApplicationRunner extends Activity {
 	public static InputStream myGGEveOfflineCharacters = null;
 	
 	public static final String PROPERTY_GGEVE_OFFLINE_MODE = "ggeve_offline_mode";
+	private static GGEveApplicationRunner myAppRunner;
+	private static GGEveDBAdapter myGGEveDBAdapter;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+		if (myAppRunner==null)
+			myAppRunner = this;
 		try {
 			InputStream is = getResources().openRawResource(R.raw.ggeve_properties);
 			if (is != null){
@@ -69,4 +80,43 @@ public class GGEveApplicationRunner extends Activity {
 	{
 		return myGGEveOfflineCharacters;
 	}
+	
+	public static GGEveDBAdapter getDatabaseAdapter()
+	{
+		if (myGGEveDBAdapter==null)
+		{
+			myGGEveDBAdapter = new GGEveDBAdapter(myAppRunner);
+			myGGEveDBAdapter.open();
+		}
+		return myGGEveDBAdapter;
+	}
+	
+	public static AccountDetails getAccountDetails()
+	{
+		SharedPreferences prefs = myAppRunner.getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,"-1");
+		String apikey = prefs.getString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
+		if (!userID.equals("-1"))
+				if (!apikey.equals("notset"))
+					return new AccountDetails(apikey, Integer.parseInt(userID));
+		File f = new File("/sdcard/ggeve.txt");
+		try {
+//			BufferedReader r = new BufferedReader(new InputStreamReader(myAppRunner.openFileInput("ggeve.txt")));
+			BufferedReader r = new BufferedReader(new FileReader(f));
+			String uid = r.readLine();
+			uid = uid.substring(uid.indexOf("=")+1);
+				String key = r.readLine();
+				key = key.substring(key.indexOf("=")+1);
+				return new AccountDetails(key, Integer.parseInt(uid));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 return null;
+		}
+		
 }

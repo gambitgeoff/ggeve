@@ -27,6 +27,7 @@ public class GGEveDBAdapter {
 	public static final int COLUMN_CHARACTER_CORP_NAME = 6;
 	public static final int COLUMN_CHARACTER_CORP_ID = 7;
 	public static final int COLUMN_CHARACTER_BALANCE = 8;
+	public static final int COLUMN_CHARACTER_IMAGE_NAME = 9;
 
 	private SQLiteDatabase myDb;
 	private final Context myContext;
@@ -42,7 +43,8 @@ public class GGEveDBAdapter {
 			+ EveCharacter.KEY_CHARACTER_GENDER + " TEXT, "
 			+ EveCharacter.KEY_CHARACTER_CORP_NAME + " TEXT NOT NULL, "
 			+ EveCharacter.KEY_CHARACTER_CORP_ID + " INTEGER NOT NULL, "
-			+ EveCharacter.KEY_CHARACTER_BALANCE + " INTEGER);";
+			+ EveCharacter.KEY_CHARACTER_BALANCE + " INTEGER, "
+		    + EveCharacter.KEY_CHARACTER_IMAGE_NAME + " TEXT);";
 
 	public GGEveDBAdapter(Context inContext) {
 		myContext = inContext;
@@ -83,6 +85,7 @@ public class GGEveDBAdapter {
 				.getRace());
 		contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter
 				.getBalance());
+		contentValues.put(EveCharacter.KEY_CHARACTER_IMAGE_NAME, inEveCharacter.getCharacterImageName());
 		return myDb.insert(DATABASE_TABLE, null, contentValues);
 	}
 

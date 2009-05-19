@@ -18,33 +18,22 @@ public class CharacterInfoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myGGEveDBAdapter = new GGEveDBAdapter(this);
-		myGGEveDBAdapter.open();
+		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
 		setContentView(R.layout.charactersheet);
 
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String char1 = prefs.getString(
-				GGEveApplicationRunner.EVE_CURRENT_CHARACTER, "No Characters!");
+		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		String char1 = prefs.getString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER, "No Characters!");
 		myEveCharacter = myGGEveDBAdapter.getEveCharacter("'" + char1 + "'");
 		updateDetails();
 	}
 
 	private void updateDetails() {
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
-				"-1");
-		String apikey = prefs.getString(
-				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
-		String char1 = prefs.getString(
-				GGEveApplicationRunner.EVE_CURRENT_CHARACTER, "No Characters!");
-		CharacterSheet cs = new CharacterSheet(Integer.parseInt(userID),
-				apikey, myEveCharacter.getCharacterID());
+		AccountDetails account = GGEveApplicationRunner.getAccountDetails();
+		CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), myEveCharacter.getCharacterID());
 		myEveCharacter = cs.getCharacter();
 		TextView viewt = (TextView) CharacterInfoActivity.this
 				.findViewById(R.id.character_name);
-		viewt.setText(char1);
+		viewt.setText(myEveCharacter.getCharacterName());
 		viewt = (TextView) CharacterInfoActivity.this
 				.findViewById(R.id.character_corp);
 		viewt.setText("Corporation Name: "
@@ -61,11 +50,7 @@ public class CharacterInfoActivity extends Activity {
 		viewt = (TextView) CharacterInfoActivity.this
 				.findViewById(R.id.character_gender);
 		viewt.setText("Gender: " + myEveCharacter.getGender());
-		if (!GGEveApplicationRunner.getIsRunningOffline()) {
-			ImageView b = (ImageView) CharacterInfoActivity.this
-					.findViewById(R.id.character_image);
-			b.setImageDrawable(EveAPI.getCharacterDrawable64(""
-					+ myEveCharacter.getCharacterID()));
-		}
+			ImageView b = (ImageView) CharacterInfoActivity.this.findViewById(R.id.character_image);
+			b.setImageDrawable(EveAPI.getCharacterImage(myEveCharacter.getCharacterID()));
 	}
 }

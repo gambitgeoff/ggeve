@@ -90,6 +90,11 @@ public class CharacterSheetEventHandler extends DefaultHandler {
 			myCurrentState = -1;
 			break;
 		}
+		case CHAR_SHEET_CHARACTER_ID: {
+			myEveCharacter.setCharacterID(Integer.parseInt(string));
+			myCurrentState = -1;
+			break;
+		}
 		case CHAR_SHEET_BLOODLINE: {
 			myEveCharacter.setBloodline(string);
 			myCurrentState = -1;

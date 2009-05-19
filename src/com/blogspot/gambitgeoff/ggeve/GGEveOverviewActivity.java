@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,48 +35,32 @@ public class GGEveOverviewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myGGEveDBAdapter = new GGEveDBAdapter(this);
-		myGGEveDBAdapter.open();
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
-		String userID = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
-				"-1");
-		String apikey = prefs.getString(
-				GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "notset");
-		if (!userID.equals("-1")) {
-			if (!apikey.equals("notset")) {
-				try {
-					AccountCharacters tempChars = new AccountCharacters(Integer
-							.parseInt(userID), apikey);
-					for (EveCharacter ec : tempChars.getCharacters()) {
-						myGGEveDBAdapter.addEveCharacter(ec);
-					}
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				} catch (EveAuthenticationException e) {
-					myInvalidKeyUserIDDialog = new Dialog(
-							GGEveOverviewActivity.this);
-					Window window = myInvalidKeyUserIDDialog.getWindow();
-					window.setFlags(
-							WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
-							WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-					myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
-					myInvalidKeyUserIDDialog
-							.setContentView(R.layout.invalidapikeyuserid);
-					myInvalidKeyUserIDDialog.show();
+		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
+		AccountDetails account = GGEveApplicationRunner.getAccountDetails();
+		if (account!=null)
+		{
+			try {
+				AccountCharacters tempChars = new AccountCharacters(account.getUserID(), account.getAPIKey());
+				for (EveCharacter ec: tempChars.getCharacters())
+					myGGEveDBAdapter.addEveCharacter(ec);
+			} catch (EveAuthenticationException e) {
+				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
+				Window window = myInvalidKeyUserIDDialog.getWindow();
+				window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+				myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
+				myInvalidKeyUserIDDialog.setContentView(R.layout.invalidapikeyuserid);
+				myInvalidKeyUserIDDialog.show();
 
-					Button ackButton = (Button) myInvalidKeyUserIDDialog
-							.findViewById(R.id.button_acknowledge);
-					ackButton.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							if (myInvalidKeyUserIDDialog != null) {
-								if (myInvalidKeyUserIDDialog.isShowing()) {
-									myInvalidKeyUserIDDialog.cancel();
-								}
+				Button ackButton = (Button) myInvalidKeyUserIDDialog.findViewById(R.id.button_acknowledge);
+				ackButton.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						if (myInvalidKeyUserIDDialog != null) {
+							if (myInvalidKeyUserIDDialog.isShowing()) {
+								myInvalidKeyUserIDDialog.cancel();
 							}
 						}
-					});
-				}
+					}
+				});
 			}
 		}
 		setContentView(R.layout.mainoverview);
@@ -91,17 +76,13 @@ public class GGEveOverviewActivity extends Activity {
 		Vector<EveCharacter> tempChars = myGGEveDBAdapter.getEveCharacters();
 		if (tempChars.size() > 0 && tempChars.size() < 4) {
 			for (int i = 0; i < tempChars.size(); i++) {
-				final EveCharacter ec = tempChars.get(i);
-				if (!GGEveApplicationRunner.getIsRunningOffline()) {
-					buttons[i].setImageDrawable(EveAPI
-							.getCharacterDrawable64(""
-									+ tempChars.get(i).getCharacterID()));
-				}
+				EveCharacter ec = tempChars.get(i);
+				buttons[i].setImageDrawable(EveAPI.getCharacterImage(tempChars.get(i).getCharacterID()));
+				buttons[i].setTag(ec.getCharacterName());
 				buttons[i].setOnClickListener(new OnClickListener() {
 
 					public void onClick(View v) {
-						GGEveOverviewActivity.this.loadCharacter(ec
-								.getCharacterName());
+						GGEveOverviewActivity.this.loadCharacter((String)v.getTag());
 					}
 				});
 			}
@@ -109,14 +90,11 @@ public class GGEveOverviewActivity extends Activity {
 	}
 
 	private void loadCharacter(String inCharacter) {
-		SharedPreferences prefs = getSharedPreferences(
-				GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,
-				inCharacter);
+		editor.putString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,inCharacter);
 		editor.commit();
-		Intent characterInfoActivity = new Intent(this,
-				CharacterInfoActivity.class);
+		Intent characterInfoActivity = new Intent(this,CharacterInfoActivity.class);
 		startActivity(characterInfoActivity);
 	}
 
