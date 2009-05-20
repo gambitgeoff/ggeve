@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionName="0.0.10" package="com.blogspot.gambitgeoff.ggeve"
-	android:versionCode="10">
+	package="com.blogspot.gambitgeoff.ggeve"
+	android:versionName="0.0.11" android:versionCode="11">
 	<uses-sdk android:minSdkVersion="1" />
-	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
+	
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<application android:debuggable="true" android:enabled="true"
+	<application android:enabled="true"
 		android:allowClearUserData="true" android:icon="@drawable/eve_online_logo"
-		android:label="@string/app_title" android:description="@string/app_overview">
+		android:label="@string/app_title" android:description="@string/app_overview" android:debuggable="false">
 		<activity android:name="GGEveApplicationRunner"
 			android:enabled="true" android:screenOrientation="portrait"
 			android:icon="@drawable/eve_online_logo">
@@ -21,5 +21,4 @@
 		<activity android:name="GGEveOverviewActivity"></activity>
 		<activity android:name="CharacterInfoActivity"></activity>
 	</application>
-
 </manifest> 

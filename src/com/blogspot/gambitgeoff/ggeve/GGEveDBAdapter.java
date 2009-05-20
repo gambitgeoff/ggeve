@@ -27,39 +27,29 @@ public class GGEveDBAdapter {
 	public static final int COLUMN_CHARACTER_CORP_NAME = 6;
 	public static final int COLUMN_CHARACTER_CORP_ID = 7;
 	public static final int COLUMN_CHARACTER_BALANCE = 8;
-	public static final int COLUMN_CHARACTER_IMAGE_NAME = 9;
 
 	private SQLiteDatabase myDb;
 	private final Context myContext;
 	private DbHelper myDbHelper;
 
-	private static final String DATABASE_CREATE = "create table "
-			+ DATABASE_TABLE + " (" + KEY_ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ EveCharacter.KEY_CHARACTER_NAME + " TEXT NOT NULL, "
-			+ EveCharacter.KEY_CHARACTER_RACE + " TEXT, "
-			+ EveCharacter.KEY_CHARACTER_ID + " INTEGER NOT NULL, "
-			+ EveCharacter.KEY_CHARACTER_BLOODLINE + " TEXT, "
-			+ EveCharacter.KEY_CHARACTER_GENDER + " TEXT, "
-			+ EveCharacter.KEY_CHARACTER_CORP_NAME + " TEXT NOT NULL, "
-			+ EveCharacter.KEY_CHARACTER_CORP_ID + " INTEGER NOT NULL, "
-			+ EveCharacter.KEY_CHARACTER_BALANCE + " INTEGER, "
-		    + EveCharacter.KEY_CHARACTER_IMAGE_NAME + " TEXT);";
+	private static final String DATABASE_CREATE = "create table " + DATABASE_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ EveCharacter.KEY_CHARACTER_NAME + " TEXT NOT NULL, " + EveCharacter.KEY_CHARACTER_RACE + " TEXT, "
+			+ EveCharacter.KEY_CHARACTER_ID + " INTEGER NOT NULL, " + EveCharacter.KEY_CHARACTER_BLOODLINE + " TEXT, "
+			+ EveCharacter.KEY_CHARACTER_GENDER + " TEXT, " + EveCharacter.KEY_CHARACTER_CORP_NAME + " TEXT NOT NULL, "
+			+ EveCharacter.KEY_CHARACTER_CORP_ID + " INTEGER NOT NULL, " + EveCharacter.KEY_CHARACTER_BALANCE + " INTEGER);";
 
 	public GGEveDBAdapter(Context inContext) {
 		myContext = inContext;
-		myDbHelper = new DbHelper(myContext, DATABASE_NAME, null,
-				DATABASE_VERSION);
+		myDbHelper = new DbHelper(myContext, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	public GGEveDBAdapter open() throws SQLException {
 		myDb = myDbHelper.getWritableDatabase();
 		return this;
 	}
-	
-	public void reset()
-	{
-		if (myDb!=null)
+
+	public void reset() {
+		if (myDb != null)
 			myDbHelper.onUpgrade(myDb, 1, 1);
 	}
 
@@ -69,23 +59,14 @@ public class GGEveDBAdapter {
 
 	private long insertEveCharacter(EveCharacter inEveCharacter) {
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(EveCharacter.KEY_CHARACTER_NAME, inEveCharacter
-				.getCharacterName());
-		contentValues.put(EveCharacter.KEY_CHARACTER_ID, inEveCharacter
-				.getCharacterID());
-		contentValues.put(EveCharacter.KEY_CHARACTER_BLOODLINE, inEveCharacter
-				.getBloodline());
-		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_ID, inEveCharacter
-				.getCorporationID());
-		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_NAME, inEveCharacter
-				.getCorporationName());
-		contentValues.put(EveCharacter.KEY_CHARACTER_GENDER, inEveCharacter
-				.getGender());
-		contentValues.put(EveCharacter.KEY_CHARACTER_RACE, inEveCharacter
-				.getRace());
-		contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter
-				.getBalance());
-		contentValues.put(EveCharacter.KEY_CHARACTER_IMAGE_NAME, inEveCharacter.getCharacterImageName());
+		contentValues.put(EveCharacter.KEY_CHARACTER_NAME, inEveCharacter.getCharacterName());
+		contentValues.put(EveCharacter.KEY_CHARACTER_ID, inEveCharacter.getCharacterID());
+		contentValues.put(EveCharacter.KEY_CHARACTER_BLOODLINE, inEveCharacter.getBloodline());
+		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_ID, inEveCharacter.getCorporationID());
+		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_NAME, inEveCharacter.getCorporationName());
+		contentValues.put(EveCharacter.KEY_CHARACTER_GENDER, inEveCharacter.getGender());
+		contentValues.put(EveCharacter.KEY_CHARACTER_RACE, inEveCharacter.getRace());
+		contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter.getBalance());
 		return myDb.insert(DATABASE_TABLE, null, contentValues);
 	}
 
@@ -94,19 +75,14 @@ public class GGEveDBAdapter {
 	}
 
 	private Cursor getAllEntries() {
-		return myDb
-				.query(DATABASE_TABLE, null, null, null, null,
-						null, null);
+		return myDb.query(DATABASE_TABLE, null, null, null, null, null, null);
 	}
 
 	public EveCharacter getEveCharacter(String inEveCharacterName) {
-		String query = EveCharacter.KEY_CHARACTER_NAME + "="
-				+ inEveCharacterName;
-		Cursor cursor = myDb.query(DATABASE_TABLE, null, query, null, null,
-				null, null, null);
+		String query = EveCharacter.KEY_CHARACTER_NAME + "=" + "'" + inEveCharacterName + "'";
+		Cursor cursor = myDb.query(DATABASE_TABLE, null, query, null, null, null, null, null);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("Eve Character with name: "
-					+ inEveCharacterName + " does not exist!");
+			throw new SQLException("Eve Character with name: " + inEveCharacterName + " does not exist!");
 		}
 
 		String myName = cursor.getString(COLUMN_CHARACTER_NAME);
@@ -117,22 +93,19 @@ public class GGEveDBAdapter {
 		int myCharacterID = cursor.getInt(COLUMN_CHARACTER_ID);
 		int myCorporationID = cursor.getInt(COLUMN_CHARACTER_CORP_ID);
 		int myBalance = cursor.getInt(COLUMN_CHARACTER_BALANCE);
-		return new EveCharacter(myName, myCharacterID, myRace, myBloodline,
-				myGender, myCorporationName, myCorporationID, myBalance);
+		cursor.close();
+		return new EveCharacter(myName, myCharacterID, myRace, myBloodline, myGender, myCorporationName, myCorporationID, myBalance);
 	}
-	
-	public void addEveCharacter(EveCharacter inEveCharacter)
-	{
-		//check if already exists.
-		//if exists, then update it otherwise just add it in new.
-		String STATEMENT = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName()+"'";
+
+	public void addEveCharacter(EveCharacter inEveCharacter) {
+		// check if already exists.
+		// if exists, then update it otherwise just add it in new.
+		String STATEMENT = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName() + "'";
 		Cursor cursor = myDb.query(DATABASE_TABLE, null, STATEMENT, null, null, null, null, null);
-		if (cursor.getCount()==0 || !cursor.moveToFirst())
-		{
+		if (cursor.getCount() == 0 || !cursor.moveToFirst()) {
 			insertEveCharacter(inEveCharacter);
-		}
-		else
-		{
+			cursor.close();
+		} else {
 			updateEveCharacter(inEveCharacter);
 		}
 	}
@@ -150,39 +123,38 @@ public class GGEveDBAdapter {
 			int myCharacterID = cursor.getInt(COLUMN_CHARACTER_ID);
 			int myCorporationID = cursor.getInt(COLUMN_CHARACTER_CORP_ID);
 			int myBalance = cursor.getInt(COLUMN_CHARACTER_BALANCE);
-			returnValue.add(new EveCharacter(myName, myCharacterID, myRace,
-					myBloodline, myGender, myCorporationName, myCorporationID,
+			returnValue.add(new EveCharacter(myName, myCharacterID, myRace, myBloodline, myGender, myCorporationName, myCorporationID,
 					myBalance));
 			keepGoing = cursor.moveToNext();
 		}
+		cursor.close();
 		return returnValue;
 	}
 
 	private int updateEveCharacter(EveCharacter inEveCharacter) {
 		String where = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName() + "'";
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(EveCharacter.KEY_CHARACTER_NAME, inEveCharacter
-				.getCharacterName());
-		contentValues.put(EveCharacter.KEY_CHARACTER_ID, inEveCharacter
-				.getCharacterID());
-		contentValues.put(EveCharacter.KEY_CHARACTER_BLOODLINE, inEveCharacter
-				.getBloodline());
-		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_ID, inEveCharacter
-				.getCorporationID());
-		contentValues.put(EveCharacter.KEY_CHARACTER_CORP_NAME, inEveCharacter
-				.getCorporationName());
-		contentValues.put(EveCharacter.KEY_CHARACTER_GENDER, inEveCharacter
-				.getGender());
-		contentValues.put(EveCharacter.KEY_CHARACTER_RACE, inEveCharacter
-				.getRace());
-		contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter
-				.getBalance());
+		if (inEveCharacter.getCharacterName() != null)
+			contentValues.put(EveCharacter.KEY_CHARACTER_NAME, inEveCharacter.getCharacterName());
+		if (inEveCharacter.getCharacterID() != -1)
+			contentValues.put(EveCharacter.KEY_CHARACTER_ID, inEveCharacter.getCharacterID());
+		if (inEveCharacter.getBloodline() != null)
+			contentValues.put(EveCharacter.KEY_CHARACTER_BLOODLINE, inEveCharacter.getBloodline());
+		if (inEveCharacter.getCorporationID() != -1)
+			contentValues.put(EveCharacter.KEY_CHARACTER_CORP_ID, inEveCharacter.getCorporationID());
+		if (inEveCharacter.getCorporationName() != null)
+			contentValues.put(EveCharacter.KEY_CHARACTER_CORP_NAME, inEveCharacter.getCorporationName());
+		if (inEveCharacter.getGender() != null)
+			contentValues.put(EveCharacter.KEY_CHARACTER_GENDER, inEveCharacter.getGender());
+		if (inEveCharacter.getRace() != null)
+			contentValues.put(EveCharacter.KEY_CHARACTER_RACE, inEveCharacter.getRace());
+		if (inEveCharacter.getBalance() != -1)
+			contentValues.put(EveCharacter.KEY_CHARACTER_BALANCE, inEveCharacter.getBalance());
 		return myDb.update(DATABASE_TABLE, contentValues, where, null);
 	}
 
 	private static class DbHelper extends SQLiteOpenHelper {
-		public DbHelper(Context inContext, String inName,
-				CursorFactory inFactory, int inVersion) {
+		public DbHelper(Context inContext, String inName, CursorFactory inFactory, int inVersion) {
 			super(inContext, inName, inFactory, inVersion);
 		}
 
@@ -194,10 +166,7 @@ public class GGEveDBAdapter {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// Log the version upgrade.
-			Log
-					.w("GGEveDBAdapter", "Upgrading from version " + oldVersion
-							+ " to " + newVersion
-							+ ", which will destroy all old data");
+			Log.w("GGEveDBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
 			// Upgrade the existing database to conform to the new version.
 			// Multiple previous versions can be handled by comparing
 			// _oldVersion and _newVersion values.

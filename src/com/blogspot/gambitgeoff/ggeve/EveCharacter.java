@@ -10,10 +10,9 @@ public class EveCharacter {
 	public static final String KEY_CHARACTER_CORP_NAME = "KEY_CHARACTER_CORP_NAME";
 	public static final String KEY_CHARACTER_CORP_ID = "KEY_CHARACTER_CORP_ID";
 	public static final String KEY_CHARACTER_BALANCE = "KEY_CHARACTER_BALANCE";
-	public static final String KEY_CHARACTER_IMAGE_NAME = "KEY_CHARACTER_IMAGE_NAME";
 	private String myName, myRace, myBloodline, myGender, myCorporationName, myCharacterImageName;
-	private int myCharacterID, myCorporationID;
-	private double myBalance;
+	private int myCharacterID = -1, myCorporationID = -1;
+	private double myBalance = -1;
 	
 	public EveCharacter()
 	{

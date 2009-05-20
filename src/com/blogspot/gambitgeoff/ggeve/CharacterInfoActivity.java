@@ -23,7 +23,7 @@ public class CharacterInfoActivity extends Activity {
 
 		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
 		String char1 = prefs.getString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER, "No Characters!");
-		myEveCharacter = myGGEveDBAdapter.getEveCharacter("'" + char1 + "'");
+		myEveCharacter = myGGEveDBAdapter.getEveCharacter(char1);
 		updateDetails();
 	}
 
