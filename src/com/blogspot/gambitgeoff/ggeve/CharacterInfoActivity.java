@@ -1,7 +1,5 @@
 package com.blogspot.gambitgeoff.ggeve;
 
-import java.util.Date;
-
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
