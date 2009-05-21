@@ -1,7 +1,10 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.util.Date;
+
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ public class CharacterInfoActivity extends Activity {
 
 	private GGEveDBAdapter myGGEveDBAdapter;
 	private EveCharacter myEveCharacter;
+	private SkillInTraining mySkillInTraining;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -31,6 +35,7 @@ public class CharacterInfoActivity extends Activity {
 		AccountDetails account = GGEveApplicationRunner.getAccountDetails();
 		CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), myEveCharacter.getCharacterID());
 		myEveCharacter = cs.getCharacter();
+		mySkillInTraining = new SkillInTraining(myEveCharacter.getCharacterID());
 		TextView viewt = (TextView) CharacterInfoActivity.this
 				.findViewById(R.id.character_name);
 		viewt.setText(myEveCharacter.getCharacterName());
@@ -52,5 +57,12 @@ public class CharacterInfoActivity extends Activity {
 		viewt.setText("Gender: " + myEveCharacter.getGender());
 			ImageView b = (ImageView) CharacterInfoActivity.this.findViewById(R.id.character_image);
 			b.setImageDrawable(EveAPI.getCharacterImage(myEveCharacter.getCharacterID()));
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_training);
+		viewt.setText("Currently Training: " + mySkillInTraining.getTrainingInformation().getTrainingTypeID() + " to level: " + mySkillInTraining.getTrainingInformation().getTrainingToLevel());
+		viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.train_time_left);
+		long start = mySkillInTraining.getTrainingInformation().getTrainingStartTime().getTime();
+		long end = mySkillInTraining.getTrainingInformation().getTrainingEndTime().getTime();
+		long difference = end-start;
+		viewt.setText("Training time left: " + difference + "ms");
 	}
 }

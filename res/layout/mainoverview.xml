@@ -5,20 +5,11 @@ android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 xmlns:android="http://schemas.android.com/apk/res/android"
 >
-<ListView
-android:id="@+id/widget36"
-android:layout_width="300px"
-android:layout_height="200px"
-android:background="#ffccccff"
-android:layout_x="10px"
-android:layout_y="152px"
->
-</ListView>
 <ImageButton
 android:id="@+id/char1"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:layout_x="24px"
+android:layout_x="30px"
 android:layout_y="22px"
 >
 </ImageButton>
@@ -38,4 +29,13 @@ android:layout_x="230px"
 android:layout_y="22px"
 >
 </ImageButton>
+<Button
+android:id="@+id/encyclopedia"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Eve Encyclopedia"
+android:layout_x="100px"
+android:layout_y="182px"
+>
+</Button>
 </AbsoluteLayout>
