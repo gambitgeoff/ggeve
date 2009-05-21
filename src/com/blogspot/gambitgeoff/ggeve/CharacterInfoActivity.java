@@ -61,8 +61,31 @@ public class CharacterInfoActivity extends Activity {
 			long start = mySkillInTraining.getTrainingInformation().getTrainingStartTime().getTime();
 			long end = mySkillInTraining.getTrainingInformation().getTrainingEndTime().getTime();
 			long difference = end - start;
+			long days = difference/86400000;
+			difference = difference - (days*86400000);
+			long hours = difference/3600000;
+			difference = difference - (hours*3600000);
+			long minutes = difference / 60000;
+			difference = difference - (minutes*60000);
+			long seconds = difference/1000;
 			viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.train_time_left);
-			viewt.setText("Training time left: " + difference + "ms");
+			if (days>0)
+			{
+				viewt.setText("Training time left: " + days + " days, " + hours + " hrs, " + minutes + " mins, " + seconds + " secs");
+			}
+			else if (hours>0)
+			{
+				viewt.setText("Training time left: " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds");
+			}
+			else if (minutes>0)
+			{
+				viewt.setText("Training time left: " + minutes + " minutes, " + seconds + " seconds");
+			}
+			else if (seconds>0)
+			{
+				viewt.setText("Training time left: " + seconds + " seconds");
+			}
+			
 		} else {
 			viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_training);
 			viewt.setText("Currently not training any skills");

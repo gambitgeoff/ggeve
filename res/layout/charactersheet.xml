@@ -28,7 +28,7 @@ android:id="@+id/character_balance"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Balance:"
-android:layout_x="60px"
+android:layout_x="10px"
 android:layout_y="202px"
 >
 </TextView>
@@ -37,7 +37,7 @@ android:id="@+id/character_training"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Training:"
-android:layout_x="60px"
+android:layout_x="10px"
 android:layout_y="222px"
 >
 </TextView>
@@ -46,7 +46,7 @@ android:id="@+id/train_time_left"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Training Left:"
-android:layout_x="60px"
+android:layout_x="10px"
 android:layout_y="242px"
 >
 </TextView>
