@@ -46,7 +46,7 @@ public class GGEveOverviewActivity extends Activity {
 				{
 					CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), ec.getCharacterID());
 					EveCharacter ec2 = cs.getCharacter();
-					myGGEveDBAdapter.addEveCharacter(ec2);
+					myGGEveDBAdapter.updateEveCharacter(ec2);
 				}
 			} catch (EveAuthenticationException e) {
 				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);

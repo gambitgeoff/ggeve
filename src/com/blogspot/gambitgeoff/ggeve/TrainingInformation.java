@@ -17,6 +17,12 @@ public class TrainingInformation {
 	private int myTQTimeOffset;
 	private Date myTQTime;
 	
+	public static final String KEY_CHARACTER_ID = "characterID", KEY_CURRENT_TIME = "currentTime", KEY_TRAIN_START_TIME = "trainingStartTime", KEY_TRAIN_END_TIME = "trainingEndTime";
+	public static final String KEY_TRAIN_TYPE_ID = "trainingTypeID", KEY_TRAIN_START_SP = "trainingStartSP", KEY_TRAIN_END_SP = "trainingEndSP", KEY_TRAIN_TO_LEVEL = "trainingToLevel";
+	public static final String KEY_SKILL_ID = "skillInTrainingID", KEY_SKILL_IN_TRAINING = "skillInTraining", KEY_CACHED_UNTIL = "cachedUntil";
+	
+	
+	
 	public TrainingInformation()
 	{
 		
