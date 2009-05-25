@@ -131,7 +131,7 @@ public class GGEveDBAdapter {
 		return returnValue;
 	}
 
-	private int updateEveCharacter(EveCharacter inEveCharacter) {
+	public int updateEveCharacter(EveCharacter inEveCharacter) {
 		String where = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName() + "'";
 		ContentValues contentValues = new ContentValues();
 		if (inEveCharacter.getCharacterName() != null)

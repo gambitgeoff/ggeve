@@ -3,8 +3,8 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.util.Vector;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
+import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class GGEveOverviewActivity extends Activity {
 
@@ -40,8 +41,13 @@ public class GGEveOverviewActivity extends Activity {
 		{
 			try {
 				AccountCharacters tempChars = new AccountCharacters(account.getUserID(), account.getAPIKey());
+
 				for (EveCharacter ec: tempChars.getCharacters())
-					myGGEveDBAdapter.addEveCharacter(ec);
+				{
+					CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), ec.getCharacterID());
+					EveCharacter ec2 = cs.getCharacter();
+					myGGEveDBAdapter.addEveCharacter(ec2);
+				}
 			} catch (EveAuthenticationException e) {
 				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
 				Window window = myInvalidKeyUserIDDialog.getWindow();
@@ -68,6 +74,19 @@ public class GGEveOverviewActivity extends Activity {
 		}
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
+		updateOverallISK();
+	}
+	
+	private void updateOverallISK()
+	{
+		long totalISK = 0;
+		Vector <EveCharacter> chars = myGGEveDBAdapter.getEveCharacters();
+		for (EveCharacter ec: chars)
+		{
+			totalISK += (long)ec.getBalance();
+		}
+		TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.combined_isk);
+		tv.setText("Combined Wealth: " + totalISK + " ISK");
 	}
 	
 	private void displayGGEveInitializationInstructions()

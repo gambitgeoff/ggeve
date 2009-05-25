@@ -36,6 +36,7 @@ public class CharacterInfoActivity extends Activity {
 		CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), myEveCharacter.getCharacterID());
 		myEveCharacter = cs.getCharacter();
 		mySkillInTraining = new SkillInTraining(myEveCharacter.getCharacterID());
+		myGGEveDBAdapter.updateEveCharacter(myEveCharacter);
 		TextView viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_name);
 		viewt.setText(myEveCharacter.getCharacterName());
 		viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_corp);
@@ -45,7 +46,8 @@ public class CharacterInfoActivity extends Activity {
 		viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_bloodline);
 		viewt.setText("Bloodline: " + myEveCharacter.getBloodline());
 		viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_balance);
-		viewt.setText("Balance: " + myEveCharacter.getBalance());
+		long balance = (long)myEveCharacter.getBalance();
+		viewt.setText("Balance: " + balance + " ISK");
 		viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_gender);
 		viewt.setText("Gender: " + myEveCharacter.getGender());
 		ImageView b = (ImageView) CharacterInfoActivity.this.findViewById(R.id.character_image);

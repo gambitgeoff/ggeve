@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.blogspot.gambitgeoff.ggeve"
-	android:versionCode="13" android:versionName="0.0.13">
+	android:versionName="0.0.14" android:versionCode="14">
 	<uses-sdk android:minSdkVersion="1" />
 	
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>

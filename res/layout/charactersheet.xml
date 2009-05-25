@@ -29,7 +29,7 @@ android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Balance:"
 android:layout_x="10px"
-android:layout_y="202px"
+android:layout_y="212px"
 >
 </TextView>
 <TextView
@@ -38,7 +38,7 @@ android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Training:"
 android:layout_x="10px"
-android:layout_y="222px"
+android:layout_y="252px"
 >
 </TextView>
 <TextView
@@ -47,7 +47,7 @@ android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Training Left:"
 android:layout_x="10px"
-android:layout_y="242px"
+android:layout_y="232px"
 >
 </TextView>
 <TextView
