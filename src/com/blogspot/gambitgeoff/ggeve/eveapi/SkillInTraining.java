@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +17,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.blogspot.gambitgeoff.ggeve.AccountDetails;
+import com.blogspot.gambitgeoff.ggeve.EveCharacter;
 import com.blogspot.gambitgeoff.ggeve.GGEveApplicationRunner;
 import com.blogspot.gambitgeoff.ggeve.TrainingInformation;
 
@@ -25,8 +27,9 @@ public class SkillInTraining {
 	
 	public SkillInTraining(int inCharacterID)
 	{
-		AccountDetails accountDetails = GGEveApplicationRunner.getAccountDetails();
-		setupSkillInTraining(accountDetails, inCharacterID);
+		EveCharacter ec = GGEveApplicationRunner.getDatabaseAdapter().getEveCharacter(inCharacterID);
+		AccountDetails ad = GGEveApplicationRunner.getDatabaseAdapter().getAccount(ec.getUserID());
+		setupSkillInTraining(ad, inCharacterID);
 	}
 	
 	public TrainingInformation getTrainingInformation()
@@ -42,7 +45,7 @@ public class SkillInTraining {
 			eveOnlineURL = new URL("http://api.eve-online.com/char/SkillInTraining.xml.aspx");
 			myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
 			myConnection.setRequestMethod("POST");
-			String data = "userid=" + inAccountDetails.getUserID() + "&apikey=" + inAccountDetails.getAPIKey() + "&characterid=" + inCharacterID;
+			String data = "userid=" + inAccountDetails.getUserID() + "&apikey=" + inAccountDetails.getPublicAPIKey() + "&characterid=" + inCharacterID;
 			myConnection.setUseCaches(false);
 			myConnection.setDoInput(true);
 			myConnection.setDoOutput(true);

@@ -45,6 +45,7 @@ public class CharacterSheet {
 	
 	public EveCharacter getCharacter()
 	{
+		myCharacterSheet.setUserID(myUserID);
 		return myCharacterSheet;
 	}
 	

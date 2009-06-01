@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.blogspot.gambitgeoff.ggeve.GGEveApplicationRunner;
 import com.blogspot.gambitgeoff.ggeve.TrainingInformation;
 
 /**
@@ -51,7 +53,7 @@ public class SkillInTrainingEventHandler extends DefaultHandler {
 
 	SkillInTrainingEventHandler() {
 		myTrainingInformation = new TrainingInformation();
-		myEveDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		myEveDateFormat = GGEveApplicationRunner.getEveDateFormatter();
 	}
 
 	public TrainingInformation getTrainingInformation() {
@@ -147,7 +149,7 @@ public class SkillInTrainingEventHandler extends DefaultHandler {
 			break;
 		}
 		case CURRENT_TAG_SKILL_IN_TRAINING: {
-			myTrainingInformation.setSkillInTraining(string);
+			myTrainingInformation.setSkillInTraining(Integer.parseInt(string));
 			myCurrentState = -1;
 			break;
 		}

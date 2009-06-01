@@ -1,14 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<ImageView android:adjustViewBounds="true" android:id="@+id/character1_button" android:maxHeight="50.0px" android:maxWidth="50.0px"
-     android:layout_height="wrap_content"
-		android:src="@drawable/eve_online_logo" />
-		<ImageView android:adjustViewBounds="true" android:id="@+id/character2_button" android:maxHeight="50.0px" android:maxWidth="50.0px"
-     android:layout_height="wrap_content"
-		android:src="@drawable/eve_online_logo" />
-		<ImageView android:adjustViewBounds="true" android:id="@+id/character3_button" android:maxHeight="50.0px" android:maxWidth="50.0px"
-     android:layout_height="wrap_content"
-		android:src="@drawable/eve_online_logo" />
-</LinearLayout>
+<AbsoluteLayout
+android:id="@+id/widget40"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<Button
+android:id="@+id/ammo"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Ammunition and Charges"
+android:textSize="12sp"
+android:layout_x="0px"
+android:layout_y="2px"
+>
+</Button>
+<Button
+android:id="@+id/drones"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Drones"
+android:textSize="12sp"
+android:layout_x="0px"
+android:layout_y="62px"
+>
+</Button>
+<Button
+android:id="@+id/manufacture"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Manufacture and Research"
+android:textSize="12sp"
+android:layout_x="0px"
+android:layout_y="132px"
+>
+</Button>
+<Button
+android:id="@+id/shipmod"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Ship Modifications"
+android:textSize="12sp"
+android:layout_x="0px"
+android:layout_y="192px"
+>
+</Button>
+<Button
+android:id="@+id/skills"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Skills"
+android:textSize="12sp"
+android:layout_x="20px"
+android:layout_y="292px"
+>
+</Button>
+<Button
+android:id="@+id/trade"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Trade Goods"
+android:textSize="12sp"
+android:layout_x="10px"
+android:layout_y="362px"
+>
+</Button>
+</AbsoluteLayout>

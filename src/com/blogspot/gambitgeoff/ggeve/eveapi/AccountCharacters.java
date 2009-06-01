@@ -33,9 +33,14 @@ public class AccountCharacters {
 		myCharacters = new Vector<EveCharacter>();
 		myIsRunningOffline = GGEveApplicationRunner.getIsRunningOffline();
 		setupAccountCharacters();
+
 	}
 
 	public Vector<EveCharacter> getCharacters() {
+		for (EveCharacter ec: myCharacters)
+		{
+			ec.setUserID(myUserID);
+		}
 		return myCharacters;
 	}
 

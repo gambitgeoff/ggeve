@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_title">Eve Characters</string>
-	<string name="splashtitle">EveSplashScreen</string>
+	
 	<string name="app_runner">EveAppRunner</string>
 	<string name="app_overview">EveOverview</string>
 	<string name="menu_item">Settings</string>
-	<string name="enter_api_key">Public API Key</string>
-	<string name="enter_userid">User ID</string>
+	
+	
 	<string name="character_screeen">Character Screen</string>
+<string name="AddAccount">Add Account</string>
+<string name="ListAccounts">List Accounts</string>
 </resources>

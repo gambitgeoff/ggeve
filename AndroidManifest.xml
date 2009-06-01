@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.blogspot.gambitgeoff.ggeve"
-	android:versionName="0.0.14" android:versionCode="14">
+	android:versionName="0.0.15" android:versionCode="15">
 	<uses-sdk android:minSdkVersion="1" />
 	
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -20,5 +20,6 @@
 		<activity android:name="SplashScreen"></activity>
 		<activity android:name="GGEveOverviewActivity"></activity>
 		<activity android:name="CharacterInfoActivity"></activity>
-	</application>
+	<service android:enabled="true" android:name="GGEveUpdateService" android:permission="android.permission.INTERNET"></service>
+</application>
 </manifest> 

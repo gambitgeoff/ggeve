@@ -1,5 +1,7 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Vector;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
@@ -7,94 +9,98 @@ import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class GGEveOverviewActivity extends Activity {
 
-	private static final int MENU_APIKEY = 100;
-	private static final int MENU_USERNAME = 101;
+	private static final int MENU_ADD_ACCOUNT = 100;
+	private static final int MENU_LIST_ACCOUNTS = 101;
 	private static final int MENU_RESETDB = 102;
 	private GGEveDBAdapter myGGEveDBAdapter;
 
-	private Dialog myAPIKeyDialog, myUserNameDialog, myInvalidKeyUserIDDialog;
+	private Dialog myAddAccountDialog, myListAccountsDialog, myInvalidKeyUserIDDialog;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
-		AccountDetails account = GGEveApplicationRunner.getAccountDetails();
-		if (account!=null)
-		{
-			try {
-				AccountCharacters tempChars = new AccountCharacters(account.getUserID(), account.getAPIKey());
-
-				for (EveCharacter ec: tempChars.getCharacters())
-				{
-					CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getAPIKey(), ec.getCharacterID());
-					EveCharacter ec2 = cs.getCharacter();
-					myGGEveDBAdapter.updateEveCharacter(ec2);
-				}
-			} catch (EveAuthenticationException e) {
-				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
-				Window window = myInvalidKeyUserIDDialog.getWindow();
-				window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-				myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
-				myInvalidKeyUserIDDialog.setContentView(R.layout.invalidapikeyuserid);
-				myInvalidKeyUserIDDialog.show();
-
-				Button ackButton = (Button) myInvalidKeyUserIDDialog.findViewById(R.id.button_acknowledge);
-				ackButton.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (myInvalidKeyUserIDDialog != null) {
-							if (myInvalidKeyUserIDDialog.isShowing()) {
-								myInvalidKeyUserIDDialog.cancel();
-							}
-						}
-					}
-				});
-			}
-		}
-		else
-		{
-			displayGGEveInitializationInstructions();
-		}
+		//AccountDetails account = GGEveApplicationRunner.getAccountDetails();
+//		Vector<AccountDetails> tempAccounts = myGGEveDBAdapter.getAccounts();
+//		for (AccountDetails account: tempAccounts){
+////		if (account != null) {
+//			try {
+//				Vector <EveCharacter> accountCharacters = myGGEveDBAdapter.getEveCharacters(account.getUserID());
+//				
+//				
+//				
+////				AccountCharacters tempChars = new AccountCharacters(account.getUserID(), account.getPublicAPIKey());
+////
+////				for (EveCharacter ec : tempChars.getCharacters()) {
+////					CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getPublicAPIKey(), ec.getCharacterID());
+////					EveCharacter ec2 = cs.getCharacter();
+////					myGGEveDBAdapter.updateEveCharacter(ec2);
+////				}
+//			} catch (EveAuthenticationException e) {
+//				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
+//				Window window = myInvalidKeyUserIDDialog.getWindow();
+//				window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+//				myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
+//				myInvalidKeyUserIDDialog.setContentView(R.layout.invalidapikeyuserid);
+//				myInvalidKeyUserIDDialog.show();
+//
+//				Button ackButton = (Button) myInvalidKeyUserIDDialog.findViewById(R.id.button_acknowledge);
+//				ackButton.setOnClickListener(new OnClickListener() {
+//					public void onClick(View v) {
+//						if (myInvalidKeyUserIDDialog != null) {
+//							if (myInvalidKeyUserIDDialog.isShowing()) {
+//								myInvalidKeyUserIDDialog.cancel();
+//							}
+//						}
+//					}
+//				});
+//			}
+//		} //else {
+//			displayGGEveInitializationInstructions();
+//		}
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
 		updateOverallISK();
 	}
-	
-	private void updateOverallISK()
-	{
+
+	private void updateOverallISK() {
 		long totalISK = 0;
-		Vector <EveCharacter> chars = myGGEveDBAdapter.getEveCharacters();
-		for (EveCharacter ec: chars)
-		{
-			totalISK += (long)ec.getBalance();
+		Vector<EveCharacter> chars = myGGEveDBAdapter.getEveCharacters();
+		for (EveCharacter ec : chars) {
+			totalISK += (long) ec.getBalance();
 		}
-		TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.combined_isk);
-		tv.setText("Combined Wealth: " + totalISK + " ISK");
+		TextView tv = (TextView) GGEveOverviewActivity.this.findViewById(R.id.combined_isk);
+		tv.setText("Combined Wealth: " + NumberFormat.getInstance().format(totalISK) + " ISK");
 	}
-	
-	private void displayGGEveInitializationInstructions()
-	{
+
+	private void displayGGEveInitializationInstructions() {
 		Dialog myInitialisationErrorDialog = new Dialog(GGEveOverviewActivity.this);
 		Window window = myInitialisationErrorDialog.getWindow();
-		window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
-				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+		window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 		myInitialisationErrorDialog.setTitle("Initialisation Error");
 		myInitialisationErrorDialog.setContentView(R.layout.initialisationerror);
 		myInitialisationErrorDialog.show();
@@ -115,7 +121,7 @@ public class GGEveOverviewActivity extends Activity {
 				buttons[i].setOnClickListener(new OnClickListener() {
 
 					public void onClick(View v) {
-						GGEveOverviewActivity.this.loadCharacter((String)v.getTag());
+						GGEveOverviewActivity.this.loadCharacter((String) v.getTag());
 					}
 				});
 			}
@@ -125,9 +131,9 @@ public class GGEveOverviewActivity extends Activity {
 	private void loadCharacter(String inCharacter) {
 		SharedPreferences prefs = getSharedPreferences(GGEveApplicationRunner.EVE_PREFERENCES, Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER,inCharacter);
+		editor.putString(GGEveApplicationRunner.EVE_CURRENT_CHARACTER, inCharacter);
 		editor.commit();
-		Intent characterInfoActivity = new Intent(this,CharacterInfoActivity.class);
+		Intent characterInfoActivity = new Intent(this, CharacterInfoActivity.class);
 		startActivity(characterInfoActivity);
 	}
 
@@ -136,8 +142,7 @@ public class GGEveOverviewActivity extends Activity {
 		SubMenu sub = menu.addSubMenu(0, 0, Menu.NONE, R.string.menu_item);
 		sub.setHeaderIcon(R.drawable.menu_item_icon);
 		sub.setIcon(R.drawable.menu_item_icon);
-		sub.add(0, MENU_APIKEY, Menu.NONE, R.string.enter_api_key);
-		sub.add(0, MENU_USERNAME, Menu.NONE, R.string.enter_userid);
+		sub.add(0, MENU_ADD_ACCOUNT, Menu.NONE, R.string.AddAccount);
 		sub.add(0, MENU_RESETDB, Menu.NONE, "Reset Database");
 
 		return true;
@@ -152,100 +157,47 @@ public class GGEveOverviewActivity extends Activity {
 			myGGEveDBAdapter.reset();
 			return true;
 		}
-		case (MENU_USERNAME): {
-			if (myUserNameDialog == null)
-				myUserNameDialog = new Dialog(GGEveOverviewActivity.this);
-			Window window = myUserNameDialog.getWindow();
-			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
-					WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-			myUserNameDialog.setTitle("Enter User ID");
-			myUserNameDialog.setContentView(R.layout.useriddialog);
-			myUserNameDialog.show();
-
-			final EditText useridText = (EditText) myUserNameDialog
-					.findViewById(R.id.userId_edittext);
-			SharedPreferences prefs = getSharedPreferences(
-					GGEveApplicationRunner.EVE_PREFERENCES,
-					Activity.MODE_PRIVATE);
-			String userid = prefs.getString(GGEveApplicationRunner.EVE_USER_ID,
-					"Not yet set!");
-			useridText.setText(userid);
-
-			Button cancelButton = (Button) myUserNameDialog
-					.findViewById(R.id.cancel_button);
-			cancelButton.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					if (myUserNameDialog != null) {
-						if (myUserNameDialog.isShowing())
-							myUserNameDialog.cancel();
-					}
-				}
-
-			});
-
-			Button okButton = (Button) myUserNameDialog
-					.findViewById(R.id.ok_button);
-			okButton.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					SharedPreferences prefs = getSharedPreferences(
-							GGEveApplicationRunner.EVE_PREFERENCES,
-							Activity.MODE_PRIVATE);
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putString(GGEveApplicationRunner.EVE_USER_ID,
-							useridText.getText().toString());
-					editor.commit();
-					myUserNameDialog.cancel();
-				}
-			});
+		case (MENU_LIST_ACCOUNTS): {
+			if (myListAccountsDialog == null)
+				myListAccountsDialog = new Dialog(GGEveOverviewActivity.this);
+			Window window = myListAccountsDialog.getWindow();
+			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
+					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
+					R.id.a5 });
+			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+			myListAccountsDialog.setContentView(R.layout.list_accounts_dialog);
+			myListAccountsDialog.show();
 			return true;
 		}
-		case (MENU_APIKEY): {
-			if (myAPIKeyDialog == null)
-				myAPIKeyDialog = new Dialog(GGEveOverviewActivity.this);
-			Window window = myAPIKeyDialog.getWindow();
-			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
-					WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-			myAPIKeyDialog.setTitle(R.string.enter_api_key);
-			myAPIKeyDialog.setContentView(R.layout.apikeydialog);
-			myAPIKeyDialog.show();
+		case (MENU_ADD_ACCOUNT): {
+			if (myAddAccountDialog == null)
+				myAddAccountDialog = new Dialog(GGEveOverviewActivity.this);
+			Window window = myAddAccountDialog.getWindow();
+			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+			// myAddAccountDialog.setTitle(R.string.AddAccount);
+			myAddAccountDialog.setContentView(R.layout.add_account_dialog);
+			myAddAccountDialog.show();
 
-			final EditText apiKeyText = (EditText) myAPIKeyDialog
-					.findViewById(R.id.api_edittext);
-			SharedPreferences prefs = getSharedPreferences(
-					GGEveApplicationRunner.EVE_PREFERENCES,
-					Activity.MODE_PRIVATE);
-			String apikey = prefs.getString(
-					GGEveApplicationRunner.EVE_PUBLIC_API_KEY, "Not yet set!");
-			apiKeyText.setText(apikey);
-
-			Button cancelButton = (Button) myAPIKeyDialog
-					.findViewById(R.id.cancel_button);
-			cancelButton.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					if (myAPIKeyDialog != null) {
-						if (myAPIKeyDialog.isShowing())
-							myAPIKeyDialog.cancel();
-					}
-				}
-
-			});
-
-			Button okButton = (Button) myAPIKeyDialog
-					.findViewById(R.id.ok_button);
+			Button okButton = (Button) myAddAccountDialog.findViewById(R.id.ok_button);
 			okButton.setOnClickListener(new OnClickListener() {
-
+				// get the account details
+				// add the account to the database.
+				// close the window
 				public void onClick(View v) {
-					SharedPreferences prefs = getSharedPreferences(
-							GGEveApplicationRunner.EVE_PREFERENCES,
-							Activity.MODE_PRIVATE);
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putString(GGEveApplicationRunner.EVE_PUBLIC_API_KEY,
-							apiKeyText.getText().toString());
-					editor.commit();
-					myAPIKeyDialog.cancel();
+					if (myAddAccountDialog.isShowing()) {
+						try {
+							final String publickey = ((EditText) GGEveOverviewActivity.this.findViewById(R.id.publickey)).toString();
+							final String privatekey = ((EditText) GGEveOverviewActivity.this.findViewById(R.id.privatekey)).toString();
+							final int userid = Integer.parseInt(((EditText) GGEveOverviewActivity.this.findViewById(R.id.userid))
+									.toString());
+							AccountDetails ad = new AccountDetails(userid, publickey, privatekey);
+							myGGEveDBAdapter.updateAccountDetails(ad);
+							myAddAccountDialog.dismiss();
+						} catch (Exception e) {
+							myAddAccountDialog.dismiss();
+							e.printStackTrace();
+						}
+					}
 				}
 			});
 			return true;

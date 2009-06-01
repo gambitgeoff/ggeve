@@ -2,21 +2,28 @@ package com.blogspot.gambitgeoff.ggeve;
 
 public class AccountDetails {
 	
-	private String myAPIKey;
+	private String myPublicAPIKey, myPrivateAPIKey;
 	private int myUserID;
 	
 	public static final String KEY_ACCOUNT_USERID = "UserID";
 	public static final String KEY_ACCOUNT_APIKEY = "APIKey";
+	public static final String KEY_ACCOUNT_PRIVATE_KEY = "PrivateKey";
 	
-	public AccountDetails(String inAPIKey, int inUserID)
+	public AccountDetails(int inUserID, String inPublicAPIKey, String inPrivateAPIKey)
 	{
-		myAPIKey = inAPIKey;
+		myPublicAPIKey = inPublicAPIKey;
+		myPrivateAPIKey = inPrivateAPIKey;
 		myUserID = inUserID;
 	}
 	
-	public String getAPIKey()
+	public String getPublicAPIKey()
 	{
-		return myAPIKey;
+		return myPublicAPIKey;
+	}
+	
+	public String getPrivateAPIKey()
+	{
+		return myPrivateAPIKey;
 	}
 	
 	public int getUserID()
