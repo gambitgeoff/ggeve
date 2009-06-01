@@ -2,7 +2,6 @@ package com.blogspot.gambitgeoff.ggeve;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,14 +11,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 public class GGEveApplicationRunner extends Activity {
 
@@ -118,11 +111,6 @@ public class GGEveApplicationRunner extends Activity {
 			while ((details = r.readLine()) != null) {
 				if (details.indexOf("userid=")!=-1)
 				{
-//					new AlertDialog.Builder(GGEveApplicationRunner.this)
-//					.setTitle("Incompatible ggeve.txt version")
-//					.setMessage("http://wiki.github.com/gambitgeoff/ggeve/initialising-the-application for further information." +
-//							"  Sorry about the inconvenience, hopefully you will agree its an important update.")
-//					.show();
 					return;
 				}
 				st = new StringTokenizer(details, ":");

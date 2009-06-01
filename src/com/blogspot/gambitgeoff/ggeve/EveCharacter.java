@@ -1,7 +1,5 @@
 package com.blogspot.gambitgeoff.ggeve;
 
-import java.util.Date;
-
 public class EveCharacter {
 	
 	public static final String KEY_CHARACTER_NAME = "KEY_CHARACTER_NAME";
