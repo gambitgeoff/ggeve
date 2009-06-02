@@ -32,6 +32,12 @@ public class GGEveUpdateService extends Service {
 	{
 		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
 		myUpdateTimer.cancel();
+		try {
+			  Class serviceClass = Class.forName(this.getClass().getName());
+			  stopService(new Intent(this, serviceClass));
+			  System.out.println("service stopped");
+			} catch (ClassNotFoundException e) {e.printStackTrace();}
+
 		myUpdateTimer = new Timer("GGEveUpdateTimer");
 		myUpdateTimer.scheduleAtFixedRate(updateTask, 0, 5*60*1000);
 		refreshCharacterInfo();
