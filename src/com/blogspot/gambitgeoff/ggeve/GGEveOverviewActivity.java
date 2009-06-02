@@ -35,53 +35,16 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_ADD_ACCOUNT = 100;
 	private static final int MENU_LIST_ACCOUNTS = 101;
 	private static final int MENU_RESETDB = 102;
+	private static final int MENU_HELP = 103;
 	private GGEveDBAdapter myGGEveDBAdapter;
 
-	private Dialog myAddAccountDialog, myListAccountsDialog, myInvalidKeyUserIDDialog;
+	private Dialog myAddAccountDialog, myListAccountsDialog, myInvalidKeyUserIDDialog, myHelpMenuDialog;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
-		//AccountDetails account = GGEveApplicationRunner.getAccountDetails();
-//		Vector<AccountDetails> tempAccounts = myGGEveDBAdapter.getAccounts();
-//		for (AccountDetails account: tempAccounts){
-////		if (account != null) {
-//			try {
-//				Vector <EveCharacter> accountCharacters = myGGEveDBAdapter.getEveCharacters(account.getUserID());
-//				
-//				
-//				
-////				AccountCharacters tempChars = new AccountCharacters(account.getUserID(), account.getPublicAPIKey());
-////
-////				for (EveCharacter ec : tempChars.getCharacters()) {
-////					CharacterSheet cs = new CharacterSheet(account.getUserID(), account.getPublicAPIKey(), ec.getCharacterID());
-////					EveCharacter ec2 = cs.getCharacter();
-////					myGGEveDBAdapter.updateEveCharacter(ec2);
-////				}
-//			} catch (EveAuthenticationException e) {
-//				myInvalidKeyUserIDDialog = new Dialog(GGEveOverviewActivity.this);
-//				Window window = myInvalidKeyUserIDDialog.getWindow();
-//				window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-//				myInvalidKeyUserIDDialog.setTitle("Invalid Credentials!");
-//				myInvalidKeyUserIDDialog.setContentView(R.layout.invalidapikeyuserid);
-//				myInvalidKeyUserIDDialog.show();
-//
-//				Button ackButton = (Button) myInvalidKeyUserIDDialog.findViewById(R.id.button_acknowledge);
-//				ackButton.setOnClickListener(new OnClickListener() {
-//					public void onClick(View v) {
-//						if (myInvalidKeyUserIDDialog != null) {
-//							if (myInvalidKeyUserIDDialog.isShowing()) {
-//								myInvalidKeyUserIDDialog.cancel();
-//							}
-//						}
-//					}
-//				});
-//			}
-//		} //else {
-//			displayGGEveInitializationInstructions();
-//		}
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
 		updateOverallISK();
@@ -95,15 +58,6 @@ public class GGEveOverviewActivity extends Activity {
 		}
 		TextView tv = (TextView) GGEveOverviewActivity.this.findViewById(R.id.combined_isk);
 		tv.setText("Combined Wealth: " + NumberFormat.getInstance().format(totalISK) + " ISK");
-	}
-
-	private void displayGGEveInitializationInstructions() {
-		Dialog myInitialisationErrorDialog = new Dialog(GGEveOverviewActivity.this);
-		Window window = myInitialisationErrorDialog.getWindow();
-		window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-		myInitialisationErrorDialog.setTitle("Initialisation Error");
-		myInitialisationErrorDialog.setContentView(R.layout.initialisationerror);
-		myInitialisationErrorDialog.show();
 	}
 
 	private void setupButtonNames() {
@@ -144,6 +98,7 @@ public class GGEveOverviewActivity extends Activity {
 		sub.setIcon(R.drawable.menu_item_icon);
 		sub.add(0, MENU_ADD_ACCOUNT, Menu.NONE, R.string.AddAccount);
 		sub.add(0, MENU_RESETDB, Menu.NONE, "Reset Database");
+		sub.add(0, MENU_HELP, Menu.NONE, "Help");
 
 		return true;
 	}
@@ -155,6 +110,19 @@ public class GGEveOverviewActivity extends Activity {
 		// Check for each known menu item
 		case (MENU_RESETDB): {
 			myGGEveDBAdapter.reset();
+			return true;
+		}
+		case(MENU_HELP):{
+			if (myHelpMenuDialog == null)
+				myHelpMenuDialog = new Dialog(GGEveOverviewActivity.this);
+			Window window = myHelpMenuDialog.getWindow();
+			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
+					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
+					R.id.a5 });
+			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+			myHelpMenuDialog.setContentView(R.layout.ggeve_help);
+			myHelpMenuDialog.show();
+			
 			return true;
 		}
 		case (MENU_LIST_ACCOUNTS): {

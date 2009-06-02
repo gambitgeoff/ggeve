@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+android:id="@+id/widget0"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<TextView
+android:id="@+id/widget33"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="GGEve Help"
+android:textSize="20sp"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="12px"
+>
+</TextView>
+<TextView
+android:id="@+id/widget28"
+android:layout_width="270px"
+android:layout_height="85px"
+android:text="In order to use this application, you need to obtain the Public API Key for your account and make it available to this application.  You can find the key at the following address:"
+android:layout_x="20px"
+android:layout_y="42px"
+>
+</TextView>
+<TextView
+android:id="@+id/widget34"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="http://eveonline.com/api"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="132px"
+>
+</TextView>
+<TextView
+android:id="@+id/widget35"
+android:layout_width="270px"
+android:layout_height="wrap_content"
+android:text="Once you have obtained your API Key you need to create a special file called ggeve.txt in the root folder of your Android's sdcard, in the file, each line indicates a unique Eve-Online account and is of the format userid:publicapi:privateapi.  The three values are separated by a colon.  If you do not use the private key this is ok, but please just enter some random string in its place."
+android:layout_x="20px"
+android:layout_y="162px"
+>
+</TextView>
+</AbsoluteLayout>
