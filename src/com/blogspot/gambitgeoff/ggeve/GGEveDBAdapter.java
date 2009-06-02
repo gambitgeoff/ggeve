@@ -283,7 +283,6 @@ public class GGEveDBAdapter {
 						.parse(cachedUntil), formatter.parse(tqtime), tqtimeoffset);
 				return trainInfo;
 			} catch (java.text.ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
