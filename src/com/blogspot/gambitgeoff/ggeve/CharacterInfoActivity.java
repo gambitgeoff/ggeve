@@ -45,6 +45,7 @@ public class CharacterInfoActivity extends Activity {
 
 		TrainingInformation info = myEveCharacter.getTrainingInformation();
 		viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_training);
+		if (info!=null)
 		viewt.setText("Currently Training: " + info.getSkillInTraining());
 	}
 }

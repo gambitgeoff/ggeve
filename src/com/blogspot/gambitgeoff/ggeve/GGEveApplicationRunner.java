@@ -110,7 +110,7 @@ public class GGEveApplicationRunner extends Activity {
 			String publickey, privatekey;
 			while ((details = r.readLine()) != null) {
 				if (details.indexOf("userid=")!=-1)
-				{
+				{//need to handle this better for the old ggeve.txt format.
 					return;
 				}
 				st = new StringTokenizer(details, ":");
