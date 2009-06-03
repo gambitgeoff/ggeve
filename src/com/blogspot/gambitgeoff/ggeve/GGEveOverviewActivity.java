@@ -1,32 +1,24 @@
 package com.blogspot.gambitgeoff.ggeve;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 
-import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
-import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -38,7 +30,7 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_HELP = 103;
 	private GGEveDBAdapter myGGEveDBAdapter;
 
-	private Dialog myAddAccountDialog, myListAccountsDialog, myInvalidKeyUserIDDialog, myHelpMenuDialog;
+	private Dialog myAddAccountDialog, myListAccountsDialog, myHelpMenuDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -116,9 +108,9 @@ public class GGEveOverviewActivity extends Activity {
 			if (myHelpMenuDialog == null)
 				myHelpMenuDialog = new Dialog(GGEveOverviewActivity.this);
 			Window window = myHelpMenuDialog.getWindow();
-			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
-					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
-					R.id.a5 });
+//			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
+//					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
+//					R.id.a5 });
 			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 			myHelpMenuDialog.setContentView(R.layout.ggeve_help);
 			myHelpMenuDialog.show();
@@ -129,9 +121,9 @@ public class GGEveOverviewActivity extends Activity {
 			if (myListAccountsDialog == null)
 				myListAccountsDialog = new Dialog(GGEveOverviewActivity.this);
 			Window window = myListAccountsDialog.getWindow();
-			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
-					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
-					R.id.a5 });
+//			SimpleCursorAdapter sca = new SimpleCursorAdapter(GGEveOverviewActivity.this, R.layout.list_accounts_dialog, myGGEveDBAdapter
+//					.getAllAccounts(), new String[] { AccountDetails.KEY_ACCOUNT_USERID }, new int[] { R.id.a1, R.id.a2, R.id.a3, R.id.a4,
+//					R.id.a5 });
 			window.setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND, WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 			myListAccountsDialog.setContentView(R.layout.list_accounts_dialog);
 			myListAccountsDialog.show();
