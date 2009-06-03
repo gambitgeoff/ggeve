@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+android:id="@+id/widget43"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+>
+<Button
+android:id="@+id/ok_button"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Ok"
+android:textStyle="bold"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="302px"
+>
+</Button>
+<TextView
+android:id="@+id/widget35"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Add Eve-Online Account"
+android:textSize="18sp"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="2px"
+>
+</TextView>
+<EditText
+android:id="@+id/privatekey"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Enter Key Here"
+android:textSize="18sp"
+android:layout_x="0px"
+android:layout_y="232px"
+>
+</EditText>
+<EditText
+android:id="@+id/publickey"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Enter Key Here"
+android:textSize="18sp"
+android:layout_x="0px"
+android:layout_y="152px"
+>
+</EditText>
+<TextView
+android:id="@+id/widget42"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="User ID"
+android:textSize="18sp"
+android:gravity="center"
+android:layout_x="10px"
+android:layout_y="72px"
+>
+</TextView>
+<TextView
+android:id="@+id/widget43"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Private Key"
+android:textSize="18sp"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="202px"
+>
+</TextView>
+<EditText
+android:id="@+id/userid"
+android:layout_width="180sp"
+android:layout_height="wrap_content"
+android:text="Enter UserID Here"
+android:textSize="18sp"
+android:layout_x="90px"
+android:layout_y="62px"
+>
+</EditText>
+<TextView
+android:id="@+id/widget45"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Public API"
+android:textSize="18sp"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="122px"
+>
+</TextView>
+</AbsoluteLayout>
