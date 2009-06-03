@@ -1,10 +1,7 @@
 package com.blogspot.gambitgeoff.ggeve;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
-
-import org.apache.http.ParseException;
 
 import android.content.ContentValues;
 import android.content.Context;
