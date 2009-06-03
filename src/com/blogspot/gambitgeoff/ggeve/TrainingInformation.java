@@ -11,7 +11,6 @@ public class TrainingInformation {
 	private int myTrainingStartSP = -1;
 	private int myTrainingDestinationSP = -1;
 	private int myTrainingToLevel = -1;
-	private int mySkillInTrainingID = -1;
 	private int mySkillInTraining = -1;
 	private Date myCachedUntil = null;
 	private int myTQTimeOffset = -1;
@@ -19,8 +18,8 @@ public class TrainingInformation {
 	
 	public static final String KEY_CHARACTER_ID = "characterID", KEY_CURRENT_TIME = "currentTime", KEY_TRAIN_START_TIME = "trainingStartTime", KEY_TRAIN_END_TIME = "trainingEndTime";
 	public static final String KEY_TRAIN_TYPE_ID = "trainingTypeID", KEY_TRAIN_START_SP = "trainingStartSP", KEY_TRAIN_END_SP = "trainingEndSP", KEY_TRAIN_TO_LEVEL = "trainingToLevel";
-	public static final String KEY_SKILL_ID = "skillInTrainingID", KEY_SKILL_IN_TRAINING = "skillInTraining", KEY_CACHED_UNTIL = "cachedUntil";
 	public static final String KEY_TQTIME = "tqTime", KEY_TQTIME_OFFSET = "tqTimeOffset";
+	public static final String KEY_CACHED_UNTIL = "cachedUntil", KEY_SKILL_IN_TRAINING = "skillInTraining";
 	
 	
 	
@@ -29,7 +28,7 @@ public class TrainingInformation {
 		
 	}
 	
-	public TrainingInformation(int inCharacterID, Date inCurrentTime, Date inTrainingStartTime, Date inTrainingEndTime, int inTrainingTypeID, int inTrainingStartSP, int inTrainingDestinationSP, int inTrainingToLevel, int inSkillInTrainingID, int inSkillInTraining, Date inCachedUntil, Date inTQTime, int inTQTimeOffset)
+	public TrainingInformation(int inCharacterID, Date inCurrentTime, Date inTrainingStartTime, Date inTrainingEndTime, int inTrainingTypeID, int inTrainingStartSP, int inTrainingDestinationSP, int inTrainingToLevel, int inSkillInTrainingID, Date inCachedUntil, Date inTQTime, int inTQTimeOffset)
 	{
 		myCharacterID = inCharacterID;
 		myCurrentTime = inCurrentTime;
@@ -39,8 +38,6 @@ public class TrainingInformation {
 		myTrainingStartSP = inTrainingStartSP;
 		myTrainingDestinationSP = inTrainingDestinationSP;
 		myTrainingToLevel = inTrainingToLevel;
-		mySkillInTrainingID = inSkillInTrainingID;
-		mySkillInTraining = inSkillInTraining;
 		myCachedUntil = inCachedUntil;
 		myTQTime = inTQTime;
 		myTQTimeOffset = inTQTimeOffset;
@@ -124,16 +121,6 @@ public class TrainingInformation {
 	public void setTrainingToLevel(int inTrainingToLevel)
 	{
 		myTrainingToLevel = inTrainingToLevel;
-	}
-	
-	public int getSkillInTrainingID()
-	{
-		return mySkillInTrainingID;
-	}
-	
-	public void setSkillInTrainingID(int inSkillInTrainingID)
-	{
-		mySkillInTrainingID = inSkillInTrainingID;
 	}
 	
 	public int getSkillInTraining()

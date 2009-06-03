@@ -49,16 +49,15 @@ public class GGEveDBAdapter {
 	public static final int COLUMN_TRAININFO_CACHED_UNTIL = 1;
 	public static final int COLUMN_TRAININFO_CHARACTERID = 2;
 	public static final int COLUMN_TRAININFO_CURRENT_TIME = 3;
-	public static final int COLUMN_TRAININFO_SKILL_ID = 4;
-	public static final int COLUMN_TRAININFO_SKILL_IN_TRAINING = 5;
-	public static final int COLUMN_TRAININFO_ENDSP = 6;
-	public static final int COLUMN_TRAININFO_ENDTIME = 7;
-	public static final int COLUMN_TRAININFO_STARTSP = 8;
-	public static final int COLUMN_TRAININFO_STARTTIME = 9;
-	public static final int COLUMN_TRAININFO_TOLEVEL = 10;
-	public static final int COLUMN_TRAININFO_TYPEID = 11;
-	public static final int COLUMN_TRAININFO_TQTIME = 12;
-	public static final int COLUMN_TRAININFO_TQTIME_OFFSET = 13;
+	public static final int COLUMN_TRAININFO_SKILL_IN_TRAINING = 4;
+	public static final int COLUMN_TRAININFO_ENDSP = 5;
+	public static final int COLUMN_TRAININFO_ENDTIME = 6;
+	public static final int COLUMN_TRAININFO_STARTSP = 7;
+	public static final int COLUMN_TRAININFO_STARTTIME = 8;
+	public static final int COLUMN_TRAININFO_TOLEVEL = 9;
+	public static final int COLUMN_TRAININFO_TYPEID = 10;
+	public static final int COLUMN_TRAININFO_TQTIME = 11;
+	public static final int COLUMN_TRAININFO_TQTIME_OFFSET = 12;
 
 	private SQLiteDatabase myDb;
 	private final Context myContext;
@@ -76,13 +75,13 @@ public class GGEveDBAdapter {
 			+ AccountDetails.KEY_ACCOUNT_APIKEY + " TEXT NOT NULL," + AccountDetails.KEY_ACCOUNT_PRIVATE_KEY + " TEXT);";
 
 	private static final String DATABASE_CREATE_TRAINING_INFO_TABLE = "create table " + DATABASE_TRAINING_INFO_TABLE + " ("
-			+ KEY_TRAINING_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TrainingInformation.KEY_CACHED_UNTIL + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_CHARACTER_ID + " TEXT NOT NULL," + TrainingInformation.KEY_CURRENT_TIME + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_SKILL_ID + " TEXT NOT NULL," + TrainingInformation.KEY_SKILL_IN_TRAINING + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_TRAIN_END_SP + " TEXT NOT NULL," + TrainingInformation.KEY_TRAIN_END_TIME + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_TRAIN_START_SP + " TEXT NOT NULL," + TrainingInformation.KEY_TRAIN_START_TIME + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_TRAIN_TO_LEVEL + " TEXT NOT NULL," + TrainingInformation.KEY_TRAIN_TYPE_ID + " TEXT NOT NULL,"
-			+ TrainingInformation.KEY_TQTIME + " INTEGER," + TrainingInformation.KEY_TQTIME_OFFSET + " INTEGER);";
+			+ KEY_TRAINING_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TrainingInformation.KEY_CACHED_UNTIL + " TEXT,"
+			+ TrainingInformation.KEY_CHARACTER_ID + " INTEGER NOT NULL," + TrainingInformation.KEY_CURRENT_TIME + " TEXT,"
+			+ TrainingInformation.KEY_SKILL_IN_TRAINING + " TEXT," + TrainingInformation.KEY_TRAIN_END_SP + " TEXT,"
+			+ TrainingInformation.KEY_TRAIN_END_TIME + " TEXT," + TrainingInformation.KEY_TRAIN_START_SP + " TEXT,"
+			+ TrainingInformation.KEY_TRAIN_START_TIME + " TEXT," + TrainingInformation.KEY_TRAIN_TO_LEVEL + " TEXT,"
+			+ TrainingInformation.KEY_TRAIN_TYPE_ID + " TEXT," + TrainingInformation.KEY_TQTIME + " INTEGER,"
+			+ TrainingInformation.KEY_TQTIME_OFFSET + " INTEGER);";
 
 	public GGEveDBAdapter(Context inContext) {
 		myContext = inContext;
@@ -180,7 +179,6 @@ public class GGEveDBAdapter {
 			contentValues.put(TrainingInformation.KEY_CACHED_UNTIL, formatter.format(info.getCachedUntil()));
 			contentValues.put(TrainingInformation.KEY_CHARACTER_ID, info.getCharacterID());
 			contentValues.put(TrainingInformation.KEY_CURRENT_TIME, formatter.format(info.getCurrentTime()));
-			contentValues.put(TrainingInformation.KEY_SKILL_ID, info.getSkillInTrainingID());
 			contentValues.put(TrainingInformation.KEY_SKILL_IN_TRAINING, info.getSkillInTraining());
 			contentValues.put(TrainingInformation.KEY_TRAIN_END_SP, info.getTrainingDestinationSP());
 			contentValues.put(TrainingInformation.KEY_TRAIN_END_TIME, formatter.format(info.getTrainingEndTime()));
@@ -237,6 +235,7 @@ public class GGEveDBAdapter {
 		// if exists, then update it otherwise just add it in new.
 		String STATEMENT = EveCharacter.KEY_CHARACTER_NAME + "='" + inEveCharacter.getCharacterName() + "'";
 		Cursor cursor = myDb.query(DATABASE_CHARACTER_TABLE, null, STATEMENT, null, null, null, null, null);
+		updateTrainingInformation(inEveCharacter.getTrainingInformation());
 		if (cursor.getCount() == 0 || !cursor.moveToFirst()) {
 			addNewEveCharacter(inEveCharacter);
 			cursor.close();
@@ -258,6 +257,41 @@ public class GGEveDBAdapter {
 		return returnValue;
 	}
 
+	public long updateTrainingInformation(TrainingInformation inTrainingInformation) {
+		if (inTrainingInformation == null)
+			return -1;
+		String STATEMENT = TrainingInformation.KEY_CHARACTER_ID + "=" + inTrainingInformation.getCharacterID();
+		Cursor cursor = myDb.query(DATABASE_TRAINING_INFO_TABLE, null, STATEMENT, null, null, null, null, null);
+		SimpleDateFormat fmt = GGEveApplicationRunner.getEveDateFormatter();
+		ContentValues cv = new ContentValues();
+		if (inTrainingInformation.getCachedUntil() != null)
+			cv.put(TrainingInformation.KEY_CACHED_UNTIL, fmt.format(inTrainingInformation.getCachedUntil()));
+		if (inTrainingInformation.getCharacterID() != -1)
+			cv.put(TrainingInformation.KEY_CHARACTER_ID, inTrainingInformation.getCharacterID());
+		if (inTrainingInformation.getCurrentTime() != null)
+			cv.put(TrainingInformation.KEY_CURRENT_TIME, fmt.format(inTrainingInformation.getCurrentTime()));
+		if (inTrainingInformation.getSkillInTraining() != -1)
+			cv.put(TrainingInformation.KEY_SKILL_IN_TRAINING, inTrainingInformation.getSkillInTraining());
+		if (inTrainingInformation.getTrainingTypeID() != -1)
+			cv.put(TrainingInformation.KEY_TRAIN_TYPE_ID, inTrainingInformation.getTrainingTypeID());
+		if (inTrainingInformation.getTrainingEndTime() != null)
+			cv.put(TrainingInformation.KEY_TRAIN_END_TIME, fmt.format(inTrainingInformation.getTrainingEndTime()));
+		if (inTrainingInformation.getTrainingStartTime() != null)
+			cv.put(TrainingInformation.KEY_TRAIN_START_TIME, fmt.format(inTrainingInformation.getTrainingStartTime()));
+		if (inTrainingInformation.getTrainingToLevel() != -1)
+			cv.put(TrainingInformation.KEY_TRAIN_TO_LEVEL, inTrainingInformation.getTrainingToLevel());
+		long returnValue;
+		if (cursor.moveToFirst()) {
+			// update the current entry.
+			returnValue = myDb.update(DATABASE_TRAINING_INFO_TABLE, cv, STATEMENT, null);
+		} else {
+			// add a new entry.
+			returnValue = myDb.insert(DATABASE_TRAINING_INFO_TABLE, null, cv);
+		}
+		cursor.close();
+		return returnValue;
+	}
+
 	private TrainingInformation getTrainingInformation(int inEveCharacterID) {
 		String STATEMENT = TrainingInformation.KEY_CHARACTER_ID + "=" + inEveCharacterID;
 		Cursor cursor = myDb.query(DATABASE_TRAINING_INFO_TABLE, null, STATEMENT, null, null, null, null, null);
@@ -266,7 +300,6 @@ public class GGEveDBAdapter {
 			String cachedUntil = cursor.getString(COLUMN_TRAININFO_CACHED_UNTIL);
 			int characterID = cursor.getInt(COLUMN_TRAININFO_CHARACTERID);
 			String currentTime = cursor.getString(COLUMN_TRAININFO_CURRENT_TIME);
-			int skillID = cursor.getInt(COLUMN_TRAININFO_SKILL_ID);
 			int skillInTrain = cursor.getInt(COLUMN_TRAININFO_SKILL_IN_TRAINING);
 			int endsp = cursor.getInt(COLUMN_TRAININFO_ENDSP);
 			String endtime = cursor.getString(COLUMN_TRAININFO_ENDTIME);
@@ -276,11 +309,17 @@ public class GGEveDBAdapter {
 			int typeid = cursor.getInt(COLUMN_TRAININFO_TYPEID);
 			String tqtime = cursor.getString(COLUMN_TRAININFO_TQTIME);
 			int tqtimeoffset = cursor.getInt(COLUMN_TRAININFO_TQTIME_OFFSET);
-
+			cursor.close();
 			try {
-				TrainingInformation trainInfo = new TrainingInformation(characterID, formatter.parse(currentTime), formatter
-						.parse(starttime), formatter.parse(endtime), typeid, startsp, endsp, tolevel, skillID, skillInTrain, formatter
-						.parse(cachedUntil), formatter.parse(tqtime), tqtimeoffset);
+				TrainingInformation trainInfo = new TrainingInformation();
+				trainInfo.setCharacterID(characterID);
+				trainInfo.setSkillInTraining(skillInTrain);
+				if (skillInTrain > 0) {
+					trainInfo.setTrainingTypeID(typeid);
+					trainInfo.setTrainingToLevel(tolevel);
+					trainInfo.setTrainingEndTime(formatter.parse(endtime));
+					trainInfo.setTrainingStartTime(formatter.parse(starttime));
+				}
 				return trainInfo;
 			} catch (java.text.ParseException e) {
 				e.printStackTrace();
@@ -305,7 +344,6 @@ public class GGEveDBAdapter {
 		int myCorporationID = inCursor.getInt(COLUMN_CHARACTER_CORP_ID);
 		int myBalance = inCursor.getInt(COLUMN_CHARACTER_BALANCE);
 		int myUserID = inCursor.getInt(COLUMN_CHARACTER_USERID);
-
 		TrainingInformation info = getTrainingInformation(myCharacterID);
 
 		return new EveCharacter(myName, myCharacterID, myRace, myBloodline, myGender, myCorporationName, myCorporationID, myBalance,

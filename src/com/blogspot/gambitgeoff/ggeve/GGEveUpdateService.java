@@ -107,8 +107,8 @@ public class GGEveUpdateService extends Service {
 		{
 			SkillInTraining sit = new SkillInTraining(ec.getCharacterID());
 			TrainingInformation ti = sit.getTrainingInformation();
-			ec.setTrainingInformation(ti);
-			myGGEveDBAdapter.updateEveCharacter(ec);
+			ti.setCharacterID(ec.getCharacterID());
+			myGGEveDBAdapter.updateTrainingInformation(ti);
 		}
 	}
 }

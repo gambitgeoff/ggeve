@@ -81,5 +81,4 @@ public class SkillInTraining {
 			e.printStackTrace();
 		}
 	}
-
 }
