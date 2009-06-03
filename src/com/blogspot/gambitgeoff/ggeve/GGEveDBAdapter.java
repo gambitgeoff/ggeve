@@ -316,6 +316,7 @@ public class GGEveDBAdapter {
 					trainInfo.setTrainingToLevel(tolevel);
 					trainInfo.setTrainingEndTime(formatter.parse(endtime));
 					trainInfo.setTrainingStartTime(formatter.parse(starttime));
+					trainInfo.setCurrentTime(formatter.parse(currentTime));
 				}
 				return trainInfo;
 			} catch (java.text.ParseException e) {

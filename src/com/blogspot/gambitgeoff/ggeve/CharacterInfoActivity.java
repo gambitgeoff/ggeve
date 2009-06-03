@@ -57,7 +57,8 @@ public class CharacterInfoActivity extends Activity {
 //					viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.train_to_level);
 //					viewt.setText("Training to level: " + getRomanNumeral(info.getTrainingToLevel()));
 
-					Date startTime = info.getTrainingStartTime();
+//					Date startTime = info.getTrainingStartTime();
+					Date startTime = info.getCurrentTime();
 					Date endTime = info.getTrainingEndTime();
 
 					if (startTime != null && endTime != null) {
