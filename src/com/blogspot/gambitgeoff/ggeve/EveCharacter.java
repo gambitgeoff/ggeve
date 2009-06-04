@@ -15,10 +15,21 @@ public class EveCharacter {
 	private int myCharacterID = -1, myCorporationID = -1, myUserID = -1;
 	private double myBalance = -1;
 	private TrainingInformation myTrainingInformation;
+	private boolean myIsDefault;
 	
 	public EveCharacter()
 	{
 		
+	}
+	
+	public boolean getIsDefault()
+	{
+		return myIsDefault;
+	}
+	
+	public void setIsDefault(boolean isDefault)
+	{
+		myIsDefault = isDefault;
 	}
 	
 	public EveCharacter(String inName, int inCharacterID, String inRace,
