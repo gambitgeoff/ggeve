@@ -8,7 +8,11 @@ import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -42,6 +46,31 @@ public class GGEveUpdateService extends Service {
 		myUpdateTimer.scheduleAtFixedRate(updateTask, 0, 5*60*1000);
 		refreshCharacterInfo();
 	}
+	
+	private void sendNotification(String inCharacterName, long inTrainTime)
+	{
+		long time = System.currentTimeMillis();
+		System.out.println("Going to notify in: " + ((inTrainTime-time)/1000)/60 + " seconds.");
+		String serviceName = Context.NOTIFICATION_SERVICE;
+		NotificationManager notificationManager;
+		notificationManager = (NotificationManager)getSystemService(serviceName);
+		String text = "Skill Training Complete";
+		long when = inTrainTime;
+		int icon = R.drawable.menu_item_icon;
+		Notification n = new Notification(icon, text, when);
+		
+		Context context = getApplicationContext();
+		String expandedText = inCharacterName + " has finished training.";
+		String expandedTitle = "Eve Skill Training Complete";
+		Intent startActivityIntent = new Intent(this, GGEveOverviewActivity.class);
+		PendingIntent launchIntent = PendingIntent.getActivity(context, 0, startActivityIntent, 0);
+		int count = 1;
+		n.setLatestEventInfo(context, expandedTitle, expandedText, launchIntent);
+		
+		notificationManager.notify(count++, n);
+	}
+
+
 	
 	private TimerTask updateTask = new TimerTask(){
 		public void run(){
@@ -109,6 +138,12 @@ public class GGEveUpdateService extends Service {
 			TrainingInformation ti = sit.getTrainingInformation();
 			ti.setCharacterID(ec.getCharacterID());
 			myGGEveDBAdapter.updateTrainingInformation(ti);
+			int number = ti.getSkillInTraining();
+			if (number>0)
+			{
+				long end = ti.getTrainingEndTime().getTime();
+				sendNotification(ec.getCharacterName(), end);
+			}
 		}
 	}
 }

@@ -5,6 +5,9 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +40,11 @@ public class GGEveOverviewActivity extends Activity {
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
 		updateOverallISK();
+		NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		manager.cancel(1);
 	}
+	
+	
 
 	private void updateOverallISK() {
 		long totalISK = 0;
