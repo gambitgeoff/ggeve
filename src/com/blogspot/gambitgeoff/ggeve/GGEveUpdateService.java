@@ -94,9 +94,15 @@ public class GGEveUpdateService extends Service {
 	private void doRefreshCharacterInfo()
 	{
 		System.out.println("Refreshing Character Information!");
+		updateServerStatus();
 		refreshAccountCharacters();
 		refreshCharacterDetails();
 		refreshTrainingInfo();
+	}
+	
+	private void updateServerStatus()
+	{
+		
 	}
 	
 	private void refreshAccountCharacters()

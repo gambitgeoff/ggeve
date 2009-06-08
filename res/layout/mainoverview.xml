@@ -19,8 +19,8 @@ android:id="@+id/widget36"
 android:layout_width="wrap_content"
 android:layout_height="19px"
 android:orientation="vertical"
-android:layout_x="220px"
-android:layout_y="412px"
+android:layout_x="200px"
+android:layout_y="402px"
 >
 </LinearLayout>
 <Gallery
@@ -31,4 +31,14 @@ android:layout_x="0px"
 android:layout_y="2px"
 >
 </Gallery>
+<TextView
+android:id="@+id/server_status"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Server is offline"
+android:gravity="center"
+android:layout_x="0px"
+android:layout_y="242px"
+>
+</TextView>
 </AbsoluteLayout>

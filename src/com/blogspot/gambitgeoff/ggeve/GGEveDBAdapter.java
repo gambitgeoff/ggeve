@@ -3,6 +3,8 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,11 +20,18 @@ public class GGEveDBAdapter {
 	private static final String DATABASE_CHARACTER_TABLE = "characterTable";
 	private static final String DATABASE_ACCOUNTS_TABLE = "accountTable";
 	private static final String DATABASE_TRAINING_INFO_TABLE = "trainingInfoTable";
+	private static final String DATABASE_SERVER_STATUS_TABLE =  "serverStatusTable";
 	private static final int DATABASE_VERSION = 1;
 
 	private static final String KEY_CHAR_TABLE_ID = "_id";
 	private static final String KEY_ACCOUNT_TABLE_ID = "_id";
 	private static final String KEY_TRAINING_TABLE_ID = "_id";
+	private static final String KEY_SERVER_STATUS_TABLE_ID = "_id";
+	
+	public static final int COLUMN_SERVER_STATUS_ONLINE = 1;
+	public static final int COLUMN_SERVER_STATUS_NUMPLAYERS = 2;
+	public static final int COLUMN_SERVER_STATUS_CURRTIME = 3;
+	public static final int COLUMN_SERVER_STATUS_CACHETIME = 4;
 
 	public static final int COLUMN_CHARACTER_NAME = 1;
 	public static final int COLUMN_CHARACTER_RACE = 2;
@@ -59,6 +68,13 @@ public class GGEveDBAdapter {
 	private SQLiteDatabase myDb;
 	private final Context myContext;
 	private DbHelper myDbHelper;
+	
+	private static final String DATABASE_CREATE_SERVER_STATUS_TABLE  = "create table " + DATABASE_SERVER_STATUS_TABLE + " (" +
+								KEY_SERVER_STATUS_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+								ServerStatus.KEY_IS_ONLINE + " TEXT NOT NULL, " +
+								ServerStatus.KEY_NUM_PLAYERS + " INTEGER NOT NULL, " +
+								ServerStatus.KEY_CURRTIME + " TEXT NOT NULL, " +
+								ServerStatus.KEY_CACHETIME + " TEXT NOT NULL);";
 
 	private static final String DATABASE_CREATE_CHARACTER_TABLE = "create table " + DATABASE_CHARACTER_TABLE + " (" + KEY_CHAR_TABLE_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + EveCharacter.KEY_CHARACTER_NAME + " TEXT NOT NULL, "
@@ -83,6 +99,12 @@ public class GGEveDBAdapter {
 	public GGEveDBAdapter(Context inContext) {
 		myContext = inContext;
 		myDbHelper = new DbHelper(myContext, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+	
+	public void updateServerStatus(ServerStatus inServerStatus)
+	{
+		ContentValues cv = new ContentValues();
+		//blah blah...
 	}
 
 	public GGEveDBAdapter open() throws SQLException {
@@ -402,6 +424,7 @@ public class GGEveDBAdapter {
 			db.execSQL(DATABASE_CREATE_CHARACTER_TABLE);
 			db.execSQL(DATABASE_CREATE_ACCOUNTS_TABLE);
 			db.execSQL(DATABASE_CREATE_TRAINING_INFO_TABLE);
+			db.execSQL(DATABASE_CREATE_SERVER_STATUS_TABLE);
 		}
 
 		@Override
@@ -416,6 +439,7 @@ public class GGEveDBAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_CHARACTER_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TRAINING_INFO_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_ACCOUNTS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SERVER_STATUS_TABLE);
 			// Create a new one.
 			onCreate(db);
 
