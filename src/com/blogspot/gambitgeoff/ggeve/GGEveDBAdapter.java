@@ -127,12 +127,12 @@ public class GGEveDBAdapter {
 		Cursor c = myDb.query(DATABASE_SERVER_STATUS_TABLE, null, null, null, null, null, null);
 		if (c.getCount() > 0) {
 			try {
-				c.close();
 				StatusInformation returnValue = new StatusInformation();
 				returnValue.setNumberOfPlayers(c.getInt(COLUMN_SERVER_STATUS_NUMPLAYERS));
 				returnValue.setCurrentTime(sdf.parse(c.getString(COLUMN_SERVER_STATUS_CURRTIME)));
 				returnValue.setCachedUntilTime(sdf.parse(c.getString(COLUMN_SERVER_STATUS_CACHETIME)));
 				returnValue.setIsOnline(Boolean.parseBoolean(c.getString(COLUMN_SERVER_STATUS_ONLINE)));
+				c.close();
 				return returnValue;
 			} catch (java.text.ParseException pe) {
 				pe.printStackTrace();

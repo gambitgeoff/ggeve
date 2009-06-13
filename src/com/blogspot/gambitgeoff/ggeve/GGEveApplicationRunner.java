@@ -100,7 +100,7 @@ public class GGEveApplicationRunner extends Activity {
 	}
 
 	private void bootstrapAccountsFromFile() {
-		File f = new File("/sdcard/ggeve.txt");
+		File f = new File("/sdcard/ggeve/ggeve.txt");
 		Vector<AccountDetails> tempAccounts = new Vector<AccountDetails>();
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(f));

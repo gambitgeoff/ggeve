@@ -18,6 +18,8 @@ public class EveAPI {
 	public static final int myCharacterID = -1;
 	public static final String myAPIKey = "";
 	public static final int myUserID = -1;
+	public static final String myEveDirectory = "sdcard/ggeve";
+	public static final String myCharacterImagesDirectory = myEveDirectory + "/chars/";
 
 	private CharacterSheet myCharacterSheet;
 
@@ -59,14 +61,15 @@ public class EveAPI {
 	 */
 	public static Drawable getCharacterImage(int inCharacterID) {
 		
-		File f = new File("sdcard/" + inCharacterID + ".jpg");
+		File f = new File(myCharacterImagesDirectory + inCharacterID + ".jpg");
 		if (f.exists())
 		{
-				return Drawable.createFromPath("/sdcard/"+inCharacterID + ".jpg");
+				return Drawable.createFromPath(myCharacterImagesDirectory+inCharacterID + ".jpg");
 		}
 		else
 		{
 			try {
+				new File(myCharacterImagesDirectory).mkdirs();
 				URL eveOnlineURL = new URL("http://img.eve.is/serv.asp");
 				HttpURLConnection myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
 				myConnection.setRequestMethod("POST");
@@ -93,7 +96,7 @@ public class EveAPI {
 				fos.write(baos.toByteArray());
 				fos.flush();
 				fos.close();
-				return Drawable.createFromPath("/sdcard/"+inCharacterID + ".jpg");
+				return Drawable.createFromPath(myCharacterImagesDirectory+inCharacterID + ".jpg");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
