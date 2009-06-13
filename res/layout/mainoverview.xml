@@ -35,10 +35,18 @@ android:layout_y="2px"
 android:id="@+id/server_status"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
-android:text="Server is offline"
-android:gravity="center"
+android:text="Server Status:"
 android:layout_x="0px"
 android:layout_y="242px"
+>
+</TextView>
+<TextView
+android:id="@+id/current_players"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:text="Current Players:"
+android:layout_x="0px"
+android:layout_y="262px"
 >
 </TextView>
 </AbsoluteLayout>

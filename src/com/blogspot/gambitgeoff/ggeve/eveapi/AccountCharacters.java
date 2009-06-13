@@ -53,7 +53,7 @@ public class AccountCharacters {
 		{
 		eveOnlineURL = new URL("http://api.eve-online.com/account/Characters.xml.aspx");
 		myConnection = (HttpURLConnection) eveOnlineURL.openConnection();
-		myConnection.setRequestMethod("POST");
+		myConnection.setRequestMethod("GET");
 		String data = "userid=" + myUserID + "&apikey=" + myAPIKey;
 		myConnection.setUseCaches(false);
 		myConnection.setDoInput(true);

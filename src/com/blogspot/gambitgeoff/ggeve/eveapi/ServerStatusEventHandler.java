@@ -6,6 +6,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.blogspot.gambitgeoff.ggeve.GGEveApplicationRunner;
+import com.blogspot.gambitgeoff.ggeve.StatusInformation;
 import com.blogspot.gambitgeoff.ggeve.TrainingInformation;
 
 /**
@@ -21,7 +22,7 @@ import com.blogspot.gambitgeoff.ggeve.TrainingInformation;
  */
 public class ServerStatusEventHandler extends DefaultHandler {
 
-	private ServerStatus myServerStatus;
+	private StatusInformation myStatusInformation;
 
 	private static final int CURRENT_TAG_SERVER_OPEN = 1;
 	private static final int CURRENT_TAG_ONLINE_PLAYERS = 2;
@@ -32,12 +33,12 @@ public class ServerStatusEventHandler extends DefaultHandler {
 	private int myCurrentState = -1;
 
 	ServerStatusEventHandler() {
-		myServerStatus = new ServerStatus();
+		myStatusInformation = new StatusInformation();
 		myEveDateFormat = GGEveApplicationRunner.getEveDateFormatter();
 	}
 
-	public ServerStatus getServerStatus() {
-		return myServerStatus;
+	public StatusInformation getServerStatus() {
+		return myStatusInformation;
 	}
 
 	public void startDocument() throws SAXException {
@@ -63,22 +64,22 @@ public class ServerStatusEventHandler extends DefaultHandler {
 		try {
 			switch (myCurrentState) {
 			case CURRENT_TAG_SERVER_OPEN: {
-				myServerStatus.setIsOnline(Boolean.parseBoolean(string));
+				myStatusInformation.setIsOnline(Boolean.parseBoolean(string));
 				myCurrentState = -1;
 				break;
 			}
 			case CURRENT_TAG_ONLINE_PLAYERS: {
-				myServerStatus.setNumberOfPlayers(Integer.parseInt(string));
+				myStatusInformation.setNumberOfPlayers(Integer.parseInt(string));
 				myCurrentState = -1;
 				break;
 			}
 			case CURRENT_TAG_CACHED_UNTIL: {
-				myServerStatus.setCachedUntilTime(myEveDateFormat.parse(string));
+				myStatusInformation.setCachedUntilTime(myEveDateFormat.parse(string));
 				myCurrentState = -1;
 				break;
 			}
 			case CURRENT_TAG_CURRENT_TIME: {
-				myServerStatus.setCurrentTime(myEveDateFormat.parse(string));
+				myStatusInformation.setCurrentTime(myEveDateFormat.parse(string));
 				myCurrentState = -1;
 				break;
 			}

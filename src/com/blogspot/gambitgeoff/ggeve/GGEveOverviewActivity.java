@@ -3,6 +3,8 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.text.NumberFormat;
 import java.util.Vector;
 
+import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Notification;
@@ -40,8 +42,35 @@ public class GGEveOverviewActivity extends Activity {
 		setContentView(R.layout.mainoverview);
 		setupButtonNames();
 		updateOverallISK();
+		updateServerStatus();
 		NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 		manager.cancel(1);
+	}
+	
+	private void updateServerStatus()
+	{
+		StatusInformation ss = myGGEveDBAdapter.getServerStatus();
+		if (ss==null)
+		{
+			ServerStatus s = new ServerStatus();
+			ss = s.getStatusInformation();
+		}
+
+		if (ss.getIsOnline())
+		{
+			TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.server_status);
+			tv.setText("Server Status: Online");
+			tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.current_players);
+			tv.setText("Current Players: " + ss.getNumberOfPlayers());
+		}
+		else
+		{
+			TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.server_status);
+			tv.setText("Server Status: Offline");
+			tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.current_players);
+			tv.setText("Current Players: 0");
+		}
+		
 	}
 	
 	

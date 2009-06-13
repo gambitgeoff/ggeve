@@ -3,6 +3,8 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import org.apache.http.ParseException;
+
 import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
 
 import android.content.ContentValues;
@@ -20,14 +22,14 @@ public class GGEveDBAdapter {
 	private static final String DATABASE_CHARACTER_TABLE = "characterTable";
 	private static final String DATABASE_ACCOUNTS_TABLE = "accountTable";
 	private static final String DATABASE_TRAINING_INFO_TABLE = "trainingInfoTable";
-	private static final String DATABASE_SERVER_STATUS_TABLE =  "serverStatusTable";
+	private static final String DATABASE_SERVER_STATUS_TABLE = "serverStatusTable";
 	private static final int DATABASE_VERSION = 1;
 
 	private static final String KEY_CHAR_TABLE_ID = "_id";
 	private static final String KEY_ACCOUNT_TABLE_ID = "_id";
 	private static final String KEY_TRAINING_TABLE_ID = "_id";
 	private static final String KEY_SERVER_STATUS_TABLE_ID = "_id";
-	
+
 	public static final int COLUMN_SERVER_STATUS_ONLINE = 1;
 	public static final int COLUMN_SERVER_STATUS_NUMPLAYERS = 2;
 	public static final int COLUMN_SERVER_STATUS_CURRTIME = 3;
@@ -68,13 +70,11 @@ public class GGEveDBAdapter {
 	private SQLiteDatabase myDb;
 	private final Context myContext;
 	private DbHelper myDbHelper;
-	
-	private static final String DATABASE_CREATE_SERVER_STATUS_TABLE  = "create table " + DATABASE_SERVER_STATUS_TABLE + " (" +
-								KEY_SERVER_STATUS_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-								ServerStatus.KEY_IS_ONLINE + " TEXT NOT NULL, " +
-								ServerStatus.KEY_NUM_PLAYERS + " INTEGER NOT NULL, " +
-								ServerStatus.KEY_CURRTIME + " TEXT NOT NULL, " +
-								ServerStatus.KEY_CACHETIME + " TEXT NOT NULL);";
+
+	private static final String DATABASE_CREATE_SERVER_STATUS_TABLE = "create table " + DATABASE_SERVER_STATUS_TABLE + " ("
+			+ KEY_SERVER_STATUS_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + StatusInformation.KEY_IS_ONLINE + " TEXT NOT NULL, "
+			+ StatusInformation.KEY_NUM_PLAYERS + " INTEGER NOT NULL, " + StatusInformation.KEY_CURRTIME + " TEXT NOT NULL, "
+			+ StatusInformation.KEY_CACHETIME + " TEXT NOT NULL);";
 
 	private static final String DATABASE_CREATE_CHARACTER_TABLE = "create table " + DATABASE_CHARACTER_TABLE + " (" + KEY_CHAR_TABLE_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + EveCharacter.KEY_CHARACTER_NAME + " TEXT NOT NULL, "
@@ -100,11 +100,50 @@ public class GGEveDBAdapter {
 		myContext = inContext;
 		myDbHelper = new DbHelper(myContext, DATABASE_NAME, null, DATABASE_VERSION);
 	}
-	
-	public void updateServerStatus(ServerStatus inServerStatus)
-	{
-		ContentValues cv = new ContentValues();
-		//blah blah...
+
+	public long updateServerStatus(StatusInformation inServerStatus) {
+		SimpleDateFormat sdf = GGEveApplicationRunner.getEveDateFormatter();
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(StatusInformation.KEY_IS_ONLINE, ""+inServerStatus.getIsOnline());
+		contentValues.put(StatusInformation.KEY_NUM_PLAYERS, new Integer(inServerStatus.getNumberOfPlayers()));
+		contentValues.put(StatusInformation.KEY_CURRTIME, sdf.format(inServerStatus.getCurrentTime()));
+		contentValues.put(StatusInformation.KEY_CACHETIME, sdf.format(inServerStatus.getCachedUntilTime()));
+		Cursor c = myDb.query(DATABASE_SERVER_STATUS_TABLE, null, null, null, null, null, null);
+		if (c.getCount() > 0) {
+			System.out.println("Updating Server Status");
+//			String where = "*";
+			c.close();
+			return myDb.update(DATABASE_SERVER_STATUS_TABLE, contentValues, null, null);
+		}
+		else
+		{
+			c.close();
+			return myDb.insert(DATABASE_SERVER_STATUS_TABLE, null, contentValues);
+		}
+	}
+
+	public StatusInformation getServerStatus() {
+		SimpleDateFormat sdf = GGEveApplicationRunner.getEveDateFormatter();
+		Cursor c = myDb.query(DATABASE_SERVER_STATUS_TABLE, null, null, null, null, null, null);
+		if (c.getCount() > 0) {
+			try {
+				c.close();
+				StatusInformation returnValue = new StatusInformation();
+				returnValue.setNumberOfPlayers(c.getInt(COLUMN_SERVER_STATUS_NUMPLAYERS));
+				returnValue.setCurrentTime(sdf.parse(c.getString(COLUMN_SERVER_STATUS_CURRTIME)));
+				returnValue.setCachedUntilTime(sdf.parse(c.getString(COLUMN_SERVER_STATUS_CACHETIME)));
+				returnValue.setIsOnline(Boolean.parseBoolean(c.getString(COLUMN_SERVER_STATUS_ONLINE)));
+				return returnValue;
+			} catch (java.text.ParseException pe) {
+				pe.printStackTrace();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		c.close();
+		return null;
 	}
 
 	public GGEveDBAdapter open() throws SQLException {

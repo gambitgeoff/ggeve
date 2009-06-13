@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
+import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
 
 import android.app.Notification;
@@ -102,7 +103,8 @@ public class GGEveUpdateService extends Service {
 	
 	private void updateServerStatus()
 	{
-		
+		ServerStatus ss = new ServerStatus();
+		myGGEveDBAdapter.updateServerStatus(ss.getStatusInformation());
 	}
 	
 	private void refreshAccountCharacters()
@@ -148,7 +150,7 @@ public class GGEveUpdateService extends Service {
 			if (number>0)
 			{
 				long end = ti.getTrainingEndTime().getTime();
-				sendNotification(ec.getCharacterName(), end);
+//				sendNotification(ec.getCharacterName(), end);
 			}
 		}
 	}
