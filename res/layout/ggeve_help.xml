@@ -39,7 +39,7 @@ android:layout_y="132px"
 android:id="@+id/widget35"
 android:layout_width="270px"
 android:layout_height="wrap_content"
-android:text="Once you have obtained your API Key you need to create a special file called ggeve.txt in the root folder of your Android's sdcard, in the file, each line indicates a unique Eve-Online account and is of the format userid:publicapi:privateapi.  The three values are separated by a colon.  If you do not use the private key this is ok, but please just enter some random string in its place."
+android:text="Once you have obtained your API Key you need to create a special file called ggeve.txt inside a folder called ggeve of your Android's sdcard, in the file, each line indicates a unique Eve-Online account and is of the format userid:publicapi:privateapi.  The three values are separated by a colon.  If you do not use the private key this is ok, but please just enter some random string in its place."
 android:layout_x="20px"
 android:layout_y="162px"
 >
