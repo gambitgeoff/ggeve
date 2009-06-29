@@ -6,6 +6,9 @@ import java.util.Vector;
 import org.apache.http.ParseException;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
+import com.blogspot.gambitgeoff.ggeve.eveapi.Skill;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillGroup;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTree;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,12 +26,11 @@ public class GGEveDBAdapter {
 	private static final String DATABASE_ACCOUNTS_TABLE = "accountTable";
 	private static final String DATABASE_TRAINING_INFO_TABLE = "trainingInfoTable";
 	private static final String DATABASE_SERVER_STATUS_TABLE = "serverStatusTable";
+	private static final String DATABASE_SKILL_TABLE = "skillTable";
+	private static final String DATABASE_SKILL_GROUP_TABLE = "skillGroupTable";
 	private static final int DATABASE_VERSION = 1;
 
-	private static final String KEY_CHAR_TABLE_ID = "_id";
-	private static final String KEY_ACCOUNT_TABLE_ID = "_id";
-	private static final String KEY_TRAINING_TABLE_ID = "_id";
-	private static final String KEY_SERVER_STATUS_TABLE_ID = "_id";
+	private static final String KEY_TABLE_ID = "_id";
 
 	public static final int COLUMN_SERVER_STATUS_ONLINE = 1;
 	public static final int COLUMN_SERVER_STATUS_NUMPLAYERS = 2;
@@ -66,29 +68,44 @@ public class GGEveDBAdapter {
 	public static final int COLUMN_TRAININFO_TYPEID = 10;
 	public static final int COLUMN_TRAININFO_TQTIME = 11;
 	public static final int COLUMN_TRAININFO_TQTIME_OFFSET = 12;
+	
+	private static final int COLUMN_SKILL_GROUP_GROUPNAME = 1;
+	private static final int COLUMN_SKILL_GROUP_GROUPID = 2;
+	
+	private static final int COLUMN_SKILL_NAME = 1;
+	private static final int COLUMN_SKILL_GROUP_ID = 2;
+	private static final int COLUMN_SKILL_TYPE_ID = 3;
 
 	private SQLiteDatabase myDb;
 	private final Context myContext;
 	private DbHelper myDbHelper;
+	
+	private static final String DATABASE_CREATE_SKILLS_GROUP_TABLE = "create table " + DATABASE_SKILL_GROUP_TABLE + " ("
+			+ KEY_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + SkillGroup.SKILLGROUP_NAME + " TEXT NOT NULL, "
+			+ SkillGroup.SKILLGROUP_ID + " INTEGER NOT NULL);";
+	
+	private static final String DATABASE_CREATE_SKILLS_TABLE = "create table " + DATABASE_SKILL_TABLE + " ("
+			+ KEY_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Skill.TYPE_NAME + " TEXT NOT NULL, "
+			+ Skill.GROUP_ID + " INTEGER NOT NULL, " + Skill.TYPE_ID + " INTEGER NOT NULL);";
 
 	private static final String DATABASE_CREATE_SERVER_STATUS_TABLE = "create table " + DATABASE_SERVER_STATUS_TABLE + " ("
-			+ KEY_SERVER_STATUS_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + StatusInformation.KEY_IS_ONLINE + " TEXT NOT NULL, "
+			+ KEY_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + StatusInformation.KEY_IS_ONLINE + " TEXT NOT NULL, "
 			+ StatusInformation.KEY_NUM_PLAYERS + " INTEGER NOT NULL, " + StatusInformation.KEY_CURRTIME + " TEXT NOT NULL, "
 			+ StatusInformation.KEY_CACHETIME + " TEXT NOT NULL);";
 
-	private static final String DATABASE_CREATE_CHARACTER_TABLE = "create table " + DATABASE_CHARACTER_TABLE + " (" + KEY_CHAR_TABLE_ID
+	private static final String DATABASE_CREATE_CHARACTER_TABLE = "create table " + DATABASE_CHARACTER_TABLE + " (" + KEY_TABLE_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + EveCharacter.KEY_CHARACTER_NAME + " TEXT NOT NULL, "
 			+ EveCharacter.KEY_CHARACTER_RACE + " TEXT, " + EveCharacter.KEY_CHARACTER_ID + " INTEGER NOT NULL, "
 			+ EveCharacter.KEY_CHARACTER_BLOODLINE + " TEXT, " + EveCharacter.KEY_CHARACTER_GENDER + " TEXT, "
 			+ EveCharacter.KEY_CHARACTER_CORP_NAME + " TEXT NOT NULL, " + EveCharacter.KEY_CHARACTER_CORP_ID + " INTEGER NOT NULL, "
 			+ EveCharacter.KEY_CHARACTER_BALANCE + " INTEGER, " + EveCharacter.KEY_CHARACTER_USERID + " INTEGER);";
 
-	private static final String DATABASE_CREATE_ACCOUNTS_TABLE = "create table " + DATABASE_ACCOUNTS_TABLE + " (" + KEY_ACCOUNT_TABLE_ID
+	private static final String DATABASE_CREATE_ACCOUNTS_TABLE = "create table " + DATABASE_ACCOUNTS_TABLE + " (" + KEY_TABLE_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + AccountDetails.KEY_ACCOUNT_USERID + " TEXT NOT NULL, "
 			+ AccountDetails.KEY_ACCOUNT_APIKEY + " TEXT NOT NULL," + AccountDetails.KEY_ACCOUNT_PRIVATE_KEY + " TEXT);";
 
 	private static final String DATABASE_CREATE_TRAINING_INFO_TABLE = "create table " + DATABASE_TRAINING_INFO_TABLE + " ("
-			+ KEY_TRAINING_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TrainingInformation.KEY_CACHED_UNTIL + " TEXT,"
+			+ KEY_TABLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TrainingInformation.KEY_CACHED_UNTIL + " TEXT,"
 			+ TrainingInformation.KEY_CHARACTER_ID + " INTEGER NOT NULL," + TrainingInformation.KEY_CURRENT_TIME + " TEXT,"
 			+ TrainingInformation.KEY_SKILL_IN_TRAINING + " TEXT," + TrainingInformation.KEY_TRAIN_END_SP + " TEXT,"
 			+ TrainingInformation.KEY_TRAIN_END_TIME + " TEXT," + TrainingInformation.KEY_TRAIN_START_SP + " TEXT,"
@@ -99,6 +116,119 @@ public class GGEveDBAdapter {
 	public GGEveDBAdapter(Context inContext) {
 		myContext = inContext;
 		myDbHelper = new DbHelper(myContext, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+	
+	public void updateSkillTree(SkillTree inSkillTree)
+	{
+		Vector<SkillGroup> sgs = inSkillTree.getSkillGroups();
+		for (SkillGroup sg: sgs)
+		{
+			updateSkillGroup(sg);
+		}
+	}
+	
+	private long updateSkillGroup(SkillGroup inSkillGroup)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(SkillGroup.SKILLGROUP_NAME, inSkillGroup.getGroupName());
+		cv.put(SkillGroup.SKILLGROUP_ID, inSkillGroup.getGroupID());
+		Cursor c = myDb.query(DATABASE_SKILL_GROUP_TABLE, null, null, null, null, null, null);
+		long returnValue;
+		if (c.getCount() > 0) {
+			System.out.println("Updating Server Status");
+			c.close();
+			returnValue = myDb.update(DATABASE_SKILL_GROUP_TABLE, cv, null, null);
+		}
+		else
+		{
+			c.close();
+			returnValue = myDb.insert(DATABASE_SKILL_GROUP_TABLE, null, cv);
+		}
+		Vector<Skill> tempSkills = inSkillGroup.getSkills();
+		for(Skill s: tempSkills)
+			updateSkill(s);
+		
+		return returnValue;
+	}
+	
+	private void updateSkill(Skill inSkill)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(Skill.TYPE_NAME, inSkill.getName());
+		cv.put(Skill.GROUP_ID, inSkill.getGroupID());
+		cv.put(Skill.TYPE_ID, inSkill.getTypeID());
+		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, null, null, null, null, null);
+		if (c.getCount() > 0) {
+			System.out.println("Updating Server Status");
+			c.close();
+			myDb.update(DATABASE_SKILL_TABLE, cv, null, null);
+		}
+		else
+		{
+			c.close();
+			myDb.insert(DATABASE_SKILL_TABLE, null, cv);
+		}
+	}
+	
+	public SkillTree getSkillTree()
+	{
+		SkillTree returnValue = new SkillTree();
+		Vector<SkillGroup> skillGroups = getSkillGroups();
+		Vector<Skill> skills = getSkills();
+		for (SkillGroup sg: skillGroups)
+		{
+			returnValue.addSkillGroup(sg);
+		}
+		for (Skill s: skills)
+		{
+			returnValue.addSkill(s);
+		}
+		return returnValue;
+	}
+	
+	private Vector<Skill> getSkills()
+	{
+		Vector <Skill> returnValue = new Vector<Skill>();
+		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, null, null, null, null, null);
+		boolean keepGoing = c.moveToFirst();
+		while(keepGoing) {
+			try {
+				String skillName = c.getString(COLUMN_SKILL_NAME);
+				int groupID = c.getInt(COLUMN_SKILL_GROUP_ID);
+				int typeID = c.getInt(COLUMN_SKILL_TYPE_ID);
+				Skill s = new Skill(skillName, groupID, typeID);
+				returnValue.add(s);
+				keepGoing = c.moveToNext();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		c.close();
+		return returnValue;
+	}
+	
+	private Vector<SkillGroup> getSkillGroups()
+	{
+		Vector <SkillGroup> returnValue = new Vector<SkillGroup>();
+		Cursor c = myDb.query(DATABASE_SKILL_GROUP_TABLE, null, null, null, null, null, null);
+		boolean keepGoing = c.moveToFirst();
+		while(keepGoing) {
+			try {
+				String groupName = c.getString(COLUMN_SKILL_GROUP_GROUPNAME);
+				int groupID = c.getInt(COLUMN_SKILL_GROUP_GROUPID);
+				SkillGroup sg = new SkillGroup(groupName, groupID);
+				returnValue.add(sg);
+				keepGoing = c.moveToNext();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		c.close();
+		return returnValue;
 	}
 
 	public long updateServerStatus(StatusInformation inServerStatus) {
@@ -464,6 +594,8 @@ public class GGEveDBAdapter {
 			db.execSQL(DATABASE_CREATE_ACCOUNTS_TABLE);
 			db.execSQL(DATABASE_CREATE_TRAINING_INFO_TABLE);
 			db.execSQL(DATABASE_CREATE_SERVER_STATUS_TABLE);
+			db.execSQL(DATABASE_CREATE_SKILLS_TABLE);
+			db.execSQL(DATABASE_CREATE_SKILLS_GROUP_TABLE);
 		}
 
 		@Override
@@ -479,6 +611,8 @@ public class GGEveDBAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TRAINING_INFO_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_ACCOUNTS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SERVER_STATUS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SKILL_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_SKILL_GROUP_TABLE);
 			// Create a new one.
 			onCreate(db);
 

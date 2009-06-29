@@ -49,31 +49,32 @@ public class GGEveOverviewActivity extends Activity {
 	
 	private void updateServerStatus()
 	{
-		StatusInformation ss = myGGEveDBAdapter.getServerStatus();
-		if (ss==null)
+		StatusInformation si = myGGEveDBAdapter.getServerStatus();
+		String serverStatus = "";
+		String currentPlayers = "";
+		if (si==null)
 		{
-			ServerStatus s = new ServerStatus();
-			ss = s.getStatusInformation();
-		}
-
-		if (ss.getIsOnline())
-		{
-			TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.server_status);
-			tv.setText("Server Status: Online");
-			tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.current_players);
-			tv.setText("Current Players: " + ss.getNumberOfPlayers());
+			serverStatus = "Server Status: Unknown";
+			currentPlayers = "Current Players: Unknown";
 		}
 		else
 		{
-			TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.server_status);
-			tv.setText("Server Status: Offline");
-			tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.current_players);
-			tv.setText("Current Players: 0");
+		if (si.getIsOnline())
+		{
+			serverStatus = "Server Status: Online";
+			currentPlayers = "Current Players: " + si.getNumberOfPlayers();
 		}
-		
+		else
+		{
+			serverStatus = "Server Status: Offline";
+			currentPlayers = "Current Players: 0";
+		}
+			TextView tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.server_status);
+			tv.setText(serverStatus);
+			tv = (TextView)GGEveOverviewActivity.this.findViewById(R.id.current_players);
+			tv.setText(currentPlayers);
+		}
 	}
-	
-	
 
 	private void updateOverallISK() {
 		long totalISK = 0;
@@ -86,7 +87,6 @@ public class GGEveOverviewActivity extends Activity {
 	}
 
 	private void setupButtonNames() {
-//		ImageButton[] buttons = new ImageButton[3];
 		Gallery gallery = (Gallery)GGEveOverviewActivity.this.findViewById(R.id.character_gallery);
 		gallery.setAdapter(new ImageAdapter(GGEveOverviewActivity.this));
 		final Vector<EveCharacter> chars = myGGEveDBAdapter.getEveCharacters();
@@ -110,12 +110,16 @@ public class GGEveOverviewActivity extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		SubMenu sub = menu.addSubMenu(0, 0, Menu.NONE, R.string.menu_item);
-		sub.setHeaderIcon(R.drawable.menu_item_icon);
-		sub.setIcon(R.drawable.menu_item_icon);
-		sub.add(0, MENU_ADD_ACCOUNT, Menu.NONE, R.string.AddAccount);
-		sub.add(0, MENU_RESETDB, Menu.NONE, "Reset Database");
-		sub.add(0, MENU_HELP, Menu.NONE, "Help");
+		SubMenu settings = menu.addSubMenu(0, 0, Menu.NONE, "Settings");
+		settings.setHeaderIcon(R.drawable.menu_item_icon);
+		settings.setIcon(R.drawable.menu_item_icon);
+		settings.add(0, MENU_ADD_ACCOUNT, Menu.NONE, R.string.AddAccount);
+		settings.add(0, MENU_RESETDB, Menu.NONE, "Reset Database");
+		
+		SubMenu help = menu.addSubMenu(0,0,Menu.NONE, "Help");
+		help.setHeaderIcon(R.drawable.menu_item_icon);
+		help.setIcon(R.drawable.menu_item_icon);
+		help.add(0, MENU_HELP, Menu.NONE, "Help");
 
 		return true;
 	}

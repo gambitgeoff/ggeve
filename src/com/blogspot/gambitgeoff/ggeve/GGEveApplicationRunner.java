@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -58,6 +60,12 @@ public class GGEveApplicationRunner extends Activity {
 	
 	private void startUpdateService()
 	{
+		ActivityManager am = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> services = am.getRunningServices(ActivityManager.RECENT_WITH_EXCLUDED);
+		for (ActivityManager.RunningServiceInfo si: services)
+		{
+			System.out.println("service: " + si.service.getPackageName());
+		}
 		startService(new Intent(this, GGEveUpdateService.class));
 	}
 
@@ -101,6 +109,10 @@ public class GGEveApplicationRunner extends Activity {
 
 	private void bootstrapAccountsFromFile() {
 		File f = new File("/sdcard/ggeve/ggeve.txt");
+		if (!f.exists())
+		{
+			//display an error message (installation message) and exit.
+		}
 		Vector<AccountDetails> tempAccounts = new Vector<AccountDetails>();
 		try {
 			BufferedReader r = new BufferedReader(new FileReader(f));

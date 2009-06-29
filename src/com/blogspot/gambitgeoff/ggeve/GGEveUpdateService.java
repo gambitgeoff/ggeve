@@ -1,13 +1,37 @@
 package com.blogspot.gambitgeoff.ggeve;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
+import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatusEventHandler;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTrainingEventHandler;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTree;
+import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTreeEventHandler;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -96,9 +120,69 @@ public class GGEveUpdateService extends Service {
 	{
 		System.out.println("Refreshing Character Information!");
 		updateServerStatus();
+		updateSkillTree();
 		refreshAccountCharacters();
 		refreshCharacterDetails();
 		refreshTrainingInfo();
+	}
+	
+	private void updateSkillTree()
+	{
+		if (!GGEveApplicationRunner.getIsRunningOffline()) {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet("http://api.eve-online.com/eve/SkillTree.xml.aspx");
+			HttpResponse response = null;
+			try {
+				response = client.execute(request);
+			} catch (ClientProtocolException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			int status = response.getStatusLine().getStatusCode();
+			System.out.println("httpresponse error status: " + status);
+			if (status == HttpStatus.SC_OK) {
+				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+				try {
+					DocumentBuilder db = dbf.newDocumentBuilder();
+					db.reset();
+					try {
+						SAXParserFactory spf = SAXParserFactory.newInstance();
+						SAXParser sp = spf.newSAXParser();
+						XMLReader reader = sp.getXMLReader();
+						SkillTreeEventHandler handler = new SkillTreeEventHandler();
+						reader.setContentHandler(handler);
+						InputSource is = null;
+						try {
+							is = new InputSource(response.getEntity().getContent());
+						} catch (IllegalStateException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						try {
+							reader.parse(is);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						SkillTree tree = handler.getSkillTree();
+						myGGEveDBAdapter.updateSkillTree(tree);
+
+					} catch (SAXException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	private void updateServerStatus()
