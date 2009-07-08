@@ -7,11 +7,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.blogspot.gambitgeoff.ggeve.GGEveApplicationRunner;
 import com.blogspot.gambitgeoff.ggeve.StatusInformation;
-import com.blogspot.gambitgeoff.ggeve.TrainingInformation;
 
 /**
  * 
- * @author geoffrey
+ * @author GambitGeoff
  * 
  * 
  *         <eveapi version="2"> <currentTime>2009-06-08 12:53:28</currentTime> −

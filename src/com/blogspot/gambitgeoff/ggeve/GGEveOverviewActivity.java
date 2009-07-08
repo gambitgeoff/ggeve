@@ -3,11 +3,8 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.text.NumberFormat;
 import java.util.Vector;
 
-import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
-
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +29,7 @@ public class GGEveOverviewActivity extends Activity {
 	private static final int MENU_HELP = 103;
 	private GGEveDBAdapter myGGEveDBAdapter;
 
-	private Dialog myAddAccountDialog, myListAccountsDialog, myHelpMenuDialog;
+	private Dialog myListAccountsDialog, myHelpMenuDialog;//,myAddAccountDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -91,7 +88,7 @@ public class GGEveOverviewActivity extends Activity {
 		gallery.setAdapter(new ImageAdapter(GGEveOverviewActivity.this));
 		final Vector<EveCharacter> chars = myGGEveDBAdapter.getEveCharacters();
 		gallery.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView parent, View v, int position, long id) {
+	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 //	            Toast.makeText(GGEveOverviewActivity.this, "" + position, Toast.LENGTH_SHORT).show();
 	            loadCharacter(chars.get(position).getCharacterName());
 	        }

@@ -3,9 +3,6 @@ package com.blogspot.gambitgeoff.ggeve;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
-import org.apache.http.ParseException;
-
-import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
 import com.blogspot.gambitgeoff.ggeve.eveapi.Skill;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillGroup;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTree;
@@ -485,18 +482,18 @@ public class GGEveDBAdapter {
 		Cursor cursor = myDb.query(DATABASE_TRAINING_INFO_TABLE, null, STATEMENT, null, null, null, null, null);
 		if (cursor.moveToFirst()) {
 			SimpleDateFormat formatter = GGEveApplicationRunner.getEveDateFormatter();
-			String cachedUntil = cursor.getString(COLUMN_TRAININFO_CACHED_UNTIL);
+//			String cachedUntil = cursor.getString(COLUMN_TRAININFO_CACHED_UNTIL);
 			int characterID = cursor.getInt(COLUMN_TRAININFO_CHARACTERID);
 			String currentTime = cursor.getString(COLUMN_TRAININFO_CURRENT_TIME);
 			int skillInTrain = cursor.getInt(COLUMN_TRAININFO_SKILL_IN_TRAINING);
-			int endsp = cursor.getInt(COLUMN_TRAININFO_ENDSP);
+//			int endsp = cursor.getInt(COLUMN_TRAININFO_ENDSP);
 			String endtime = cursor.getString(COLUMN_TRAININFO_ENDTIME);
-			int startsp = cursor.getInt(COLUMN_TRAININFO_STARTSP);
+//			int startsp = cursor.getInt(COLUMN_TRAININFO_STARTSP);
 			String starttime = cursor.getString(COLUMN_TRAININFO_STARTTIME);
 			int tolevel = cursor.getInt(COLUMN_TRAININFO_TOLEVEL);
 			int typeid = cursor.getInt(COLUMN_TRAININFO_TYPEID);
-			String tqtime = cursor.getString(COLUMN_TRAININFO_TQTIME);
-			int tqtimeoffset = cursor.getInt(COLUMN_TRAININFO_TQTIME_OFFSET);
+//			String tqtime = cursor.getString(COLUMN_TRAININFO_TQTIME);
+//			int tqtimeoffset = cursor.getInt(COLUMN_TRAININFO_TQTIME_OFFSET);
 			cursor.close();
 			try {
 				TrainingInformation trainInfo = new TrainingInformation();

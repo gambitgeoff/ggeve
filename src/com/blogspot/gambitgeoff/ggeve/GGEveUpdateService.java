@@ -1,9 +1,6 @@
 package com.blogspot.gambitgeoff.ggeve;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -27,9 +24,7 @@ import org.xml.sax.XMLReader;
 import com.blogspot.gambitgeoff.ggeve.eveapi.AccountCharacters;
 import com.blogspot.gambitgeoff.ggeve.eveapi.CharacterSheet;
 import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatus;
-import com.blogspot.gambitgeoff.ggeve.eveapi.ServerStatusEventHandler;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTraining;
-import com.blogspot.gambitgeoff.ggeve.eveapi.SkillInTrainingEventHandler;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTree;
 import com.blogspot.gambitgeoff.ggeve.eveapi.SkillTreeEventHandler;
 
@@ -62,7 +57,7 @@ public class GGEveUpdateService extends Service {
 		myGGEveDBAdapter = GGEveApplicationRunner.getDatabaseAdapter();
 		myUpdateTimer.cancel();
 		try {
-			  Class serviceClass = Class.forName(this.getClass().getName());
+			  Class<?> serviceClass = Class.forName(this.getClass().getName());
 			  stopService(new Intent(this, serviceClass));
 			  System.out.println("service stopped");
 			} catch (ClassNotFoundException e) {e.printStackTrace();}
@@ -72,6 +67,7 @@ public class GGEveUpdateService extends Service {
 		refreshCharacterInfo();
 	}
 	
+	@SuppressWarnings("unused")
 	private void sendNotification(String inCharacterName, long inTrainTime)
 	{
 		long time = System.currentTimeMillis();
@@ -233,7 +229,7 @@ public class GGEveUpdateService extends Service {
 			int number = ti.getSkillInTraining();
 			if (number>0)
 			{
-				long end = ti.getTrainingEndTime().getTime();
+//				long end = ti.getTrainingEndTime().getTime();
 //				sendNotification(ec.getCharacterName(), end);
 			}
 		}

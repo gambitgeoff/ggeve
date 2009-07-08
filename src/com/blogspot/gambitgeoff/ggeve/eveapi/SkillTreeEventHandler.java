@@ -1,7 +1,6 @@
 package com.blogspot.gambitgeoff.ggeve.eveapi;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SkillTreeEventHandler extends DefaultHandler {

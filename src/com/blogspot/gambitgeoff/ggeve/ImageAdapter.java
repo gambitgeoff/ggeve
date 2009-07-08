@@ -5,14 +5,10 @@ import java.util.Vector;
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 
 import android.R.style;
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
