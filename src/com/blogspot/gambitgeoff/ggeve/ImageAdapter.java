@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import com.blogspot.gambitgeoff.ggeve.eveapi.EveAPI;
 
-import android.R.style;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -50,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
 		b.setLayoutParams(new Gallery.LayoutParams(130,130));
 		b.setPadding(20, 20, 20, 20);
 		b.setScaleType(ScaleType.FIT_XY);
-		b.setBackgroundResource(style.Widget_Gallery);
+//		b.setBackgroundResource(style.Widget_Gallery);
 		return b;
 	}
 

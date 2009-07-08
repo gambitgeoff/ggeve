@@ -51,11 +51,21 @@ public class GGEveApplicationRunner extends Activity {
 		myGGEveOfflineCharacterSheet = getResources().openRawResource(R.raw.charactersheet);
 		myGGEveOfflineCharacters = getResources().openRawResource(R.raw.characters);
 		setContentView(R.layout.main);
+		checkInstallDirectories();
 		bootstrapAccountsFromFile();
 		startUpdateService();
 
 		Intent splashIntent = new Intent(this, SplashScreen.class);
 		startActivityForResult(splashIntent, SPLASH_FINISHED);
+	}
+	
+	private void checkInstallDirectories()
+	{
+		File f = new File("/sdcard/ggeve");
+		if (!f.exists())
+		{
+			f.mkdirs();
+		}
 	}
 	
 	private void startUpdateService()
