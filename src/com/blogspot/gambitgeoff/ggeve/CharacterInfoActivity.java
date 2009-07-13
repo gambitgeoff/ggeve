@@ -51,7 +51,9 @@ public class CharacterInfoActivity extends Activity {
 			{
 				if (info.getSkillInTraining() > 0) {
 					viewt = (TextView)CharacterInfoActivity.this.findViewById(R.id.character_training);
-					viewt.setText("Currently Training: " + info.getTrainingTypeID());
+					int skillID = info.getTrainingTypeID();
+					String name = myGGEveDBAdapter.getSkillName(skillID);
+					viewt.setText("Currently Training: " + name);
 					viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.train_time_left);
 					viewt.setText("Training End Time: " + info.getTrainingEndTime());
 //					viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.train_to_level);
@@ -63,7 +65,7 @@ public class CharacterInfoActivity extends Activity {
 
 					if (startTime != null && endTime != null) {
 						viewt = (TextView) CharacterInfoActivity.this.findViewById(R.id.character_training);
-						viewt.setText("Currently Training: " + info.getTrainingTypeID() + " to level: " + getRomanNumeral(info.getTrainingToLevel()));
+						viewt.setText("Currently Training: " + name + " to level: " + getRomanNumeral(info.getTrainingToLevel()));
 						long start = startTime.getTime();
 						long end = endTime.getTime();
 						long difference = end - start;

@@ -153,18 +153,33 @@ public class GGEveDBAdapter {
 		ContentValues cv = new ContentValues();
 		cv.put(Skill.TYPE_NAME, inSkill.getName());
 		cv.put(Skill.GROUP_ID, inSkill.getGroupID());
+		String where = Skill.TYPE_ID + "=" + inSkill.getTypeID();
 		cv.put(Skill.TYPE_ID, inSkill.getTypeID());
-		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, null, null, null, null, null);
+		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, where, null, null, null, null);
 		if (c.getCount() > 0) {
-			System.out.println("Updating Server Status");
+			System.out.println("Updating Database with new Skills!");
 			c.close();
-			myDb.update(DATABASE_SKILL_TABLE, cv, null, null);
+			myDb.update(DATABASE_SKILL_TABLE, cv, where, null);
 		}
 		else
 		{
 			c.close();
 			myDb.insert(DATABASE_SKILL_TABLE, null, cv);
 		}
+	}
+	
+	public String getSkillName(int inSkillID)
+	{
+		String returnValue = null;
+//		String whereStatement = Skill.TYPE_ID + "=" + inSkillID + " AND " + Skill.GROUP_ID + "=" + inGroupID;
+		String whereStatement = Skill.TYPE_ID + "=" + inSkillID;
+		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, whereStatement, null, null, null, null);
+		if (c.moveToFirst())
+		{
+			returnValue = c.getString(COLUMN_SKILL_NAME);
+		}
+		c.close();
+		return returnValue;
 	}
 	
 	public SkillTree getSkillTree()
