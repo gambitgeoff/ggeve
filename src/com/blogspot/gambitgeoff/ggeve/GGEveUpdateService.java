@@ -116,7 +116,7 @@ public class GGEveUpdateService extends Service {
 	{
 		System.out.println("Refreshing Character Information!");
 		updateServerStatus();
-		updateSkillTree();
+//		updateSkillTree();
 		refreshAccountCharacters();
 		refreshCharacterDetails();
 		refreshTrainingInfo();

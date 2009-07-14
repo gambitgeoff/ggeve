@@ -132,7 +132,7 @@ public class GGEveDBAdapter {
 		Cursor c = myDb.query(DATABASE_SKILL_GROUP_TABLE, null, null, null, null, null, null);
 		long returnValue;
 		if (c.getCount() > 0) {
-			//System.out.println("Updating Server Status");
+			System.out.println("Updating SkillGroup: " + inSkillGroup.getGroupName());
 			c.close();
 			returnValue = myDb.update(DATABASE_SKILL_GROUP_TABLE, cv, null, null);
 		}
