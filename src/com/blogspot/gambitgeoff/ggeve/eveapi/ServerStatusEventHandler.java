@@ -44,7 +44,7 @@ public class ServerStatusEventHandler extends DefaultHandler {
 	}
 
 	public void startElement(String inNamespaceURI, String inLocalName, String inQName, Attributes inAttributes) throws SAXException {
-		System.out.println("Reading: " + inLocalName);
+		//System.out.println("Reading: " + inLocalName);
 		if (inLocalName.equals("currentTime")) {
 			myCurrentState = CURRENT_TAG_CURRENT_TIME;
 		} else if (inLocalName.equals("serverOpen")) {
@@ -59,7 +59,7 @@ public class ServerStatusEventHandler extends DefaultHandler {
 
 	public void characters(char ch[], int start, int length) {
 		String string = new String(ch, start, length);
-		System.out.println("train info: " + string + " current state: " + myCurrentState);
+		//System.out.println("train info: " + string + " current state: " + myCurrentState);
 		try {
 			switch (myCurrentState) {
 			case CURRENT_TAG_SERVER_OPEN: {

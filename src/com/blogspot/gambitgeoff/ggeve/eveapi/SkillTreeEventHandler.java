@@ -22,7 +22,7 @@ public class SkillTreeEventHandler extends DefaultHandler {
 		if ((index = inAttributes.getIndex("groupName"))!=-1)//parse a new skill group
 		{
 			String groupName = inAttributes.getValue(index);
-			System.out.println("Adding skill group: " + groupName);
+			//System.out.println("Adding skill group: " + groupName);
 			index = inAttributes.getIndex("groupID");
 			int groupID = Integer.parseInt(inAttributes.getValue(index));
 //			myCurrentSkillGroupID = groupID;
@@ -36,7 +36,7 @@ public class SkillTreeEventHandler extends DefaultHandler {
 			int typeID = Integer.parseInt(inAttributes.getValue(inAttributes.getIndex("typeID")));
 			Skill tempSkill = new Skill(skillName, groupID, typeID);
 			SkillGroup sg = mySkillTree.getSkillGroup(groupID);
-			System.out.println("Adding skill: " + skillName + " to group: " + sg.getGroupName());
+			//System.out.println("Adding skill: " + skillName + " to group: " + sg.getGroupName());
 			sg.addSkill(tempSkill);
 		}
 	}

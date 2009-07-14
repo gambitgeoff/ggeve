@@ -132,7 +132,7 @@ public class GGEveDBAdapter {
 		Cursor c = myDb.query(DATABASE_SKILL_GROUP_TABLE, null, null, null, null, null, null);
 		long returnValue;
 		if (c.getCount() > 0) {
-			System.out.println("Updating Server Status");
+			//System.out.println("Updating Server Status");
 			c.close();
 			returnValue = myDb.update(DATABASE_SKILL_GROUP_TABLE, cv, null, null);
 		}
@@ -148,6 +148,10 @@ public class GGEveDBAdapter {
 		return returnValue;
 	}
 	
+	/**
+	 * 
+	 * @param inSkill
+	 */
 	private void updateSkill(Skill inSkill)
 	{
 		ContentValues cv = new ContentValues();
@@ -157,7 +161,6 @@ public class GGEveDBAdapter {
 		cv.put(Skill.TYPE_ID, inSkill.getTypeID());
 		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, where, null, null, null, null);
 		if (c.getCount() > 0) {
-			System.out.println("Updating Database with new Skills!");
 			c.close();
 			myDb.update(DATABASE_SKILL_TABLE, cv, where, null);
 		}
@@ -171,7 +174,6 @@ public class GGEveDBAdapter {
 	public String getSkillName(int inSkillID)
 	{
 		String returnValue = null;
-//		String whereStatement = Skill.TYPE_ID + "=" + inSkillID + " AND " + Skill.GROUP_ID + "=" + inGroupID;
 		String whereStatement = Skill.TYPE_ID + "=" + inSkillID;
 		Cursor c = myDb.query(DATABASE_SKILL_TABLE, null, whereStatement, null, null, null, null);
 		if (c.moveToFirst())
@@ -252,8 +254,6 @@ public class GGEveDBAdapter {
 		contentValues.put(StatusInformation.KEY_CACHETIME, sdf.format(inServerStatus.getCachedUntilTime()));
 		Cursor c = myDb.query(DATABASE_SERVER_STATUS_TABLE, null, null, null, null, null, null);
 		if (c.getCount() > 0) {
-			System.out.println("Updating Server Status");
-//			String where = "*";
 			c.close();
 			return myDb.update(DATABASE_SERVER_STATUS_TABLE, contentValues, null, null);
 		}
@@ -267,7 +267,7 @@ public class GGEveDBAdapter {
 	public StatusInformation getServerStatus() {
 		SimpleDateFormat sdf = GGEveApplicationRunner.getEveDateFormatter();
 		Cursor c = myDb.query(DATABASE_SERVER_STATUS_TABLE, null, null, null, null, null, null);
-		if (c.getCount() > 0) {
+		if (c.moveToFirst()) {
 			try {
 				StatusInformation returnValue = new StatusInformation();
 				returnValue.setNumberOfPlayers(c.getInt(COLUMN_SERVER_STATUS_NUMPLAYERS));
@@ -339,11 +339,11 @@ public class GGEveDBAdapter {
 		contentValues.put(AccountDetails.KEY_ACCOUNT_APIKEY, inAccountDetails.getPublicAPIKey());
 		contentValues.put(AccountDetails.KEY_ACCOUNT_PRIVATE_KEY, inAccountDetails.getPrivateAPIKey());
 		if (accountExists) {
-			System.out.println("Account: " + inAccountDetails.getUserID() + " already exists.  Updating");
+			//System.out.println("Account: " + inAccountDetails.getUserID() + " already exists.  Updating");
 			String where = AccountDetails.KEY_ACCOUNT_USERID + "=" + inAccountDetails.getUserID();
 			return myDb.update(DATABASE_ACCOUNTS_TABLE, contentValues, where, null);
 		} else {
-			System.out.println("Account: " + inAccountDetails.getUserID() + " does not exist, adding new.");
+			//System.out.println("Account: " + inAccountDetails.getUserID() + " does not exist, adding new.");
 			return myDb.insert(DATABASE_ACCOUNTS_TABLE, null, contentValues);
 		}
 	}
